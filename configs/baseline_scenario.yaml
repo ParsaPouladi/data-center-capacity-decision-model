@@ -1,0 +1,32 @@
+# Baseline synthetic test fixture.
+#
+# This is a synthetic testing device for manual validation and exact-scenario
+# ground truth. It is NOT evidence about any real facility or utility.
+#
+# Intentional design:
+#   Site A = cheap but power-risky   (low cost, high burden, high uncertainty)
+#   Site B = intermediate
+#   Site C = expensive but faster    (high cost, low burden, moderate uncertainty)
+
+system:
+  required_capacity_mw: 500       # D
+  target_month: 36                # T*
+  horizon_month: 72               # H
+  lambda_mw_month: 0.0            # delay-value parameter; start at 0 for the baseline fixture
+
+sites:
+  - id: A
+    capacity_mw: 500              # K
+    cost_per_mw: 1.00             # c
+    burden_state: 3               # B
+    uncertainty_state: 3          # U
+  - id: B
+    capacity_mw: 300
+    cost_per_mw: 1.15
+    burden_state: 2
+    uncertainty_state: 1
+  - id: C
+    capacity_mw: 250
+    cost_per_mw: 1.30
+    burden_state: 1
+    uncertainty_state: 2

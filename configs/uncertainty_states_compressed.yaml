@@ -1,0 +1,36 @@
+# Energization uncertainty mapping: U_i -> delay distribution F_i
+# SENSITIVITY VARIANT (model spec): every delay_months value scaled by
+# 0.9 (~10% narrower spread) relative to configs/uncertainty_states.yaml
+# (v1-baseline) -- probabilities unchanged, same four states. This is a
+# synthetic sensitivity device to test whether decision boundaries and
+# strategy rankings identified under v1-baseline survive a plausible
+# alternative delay-spread assumption -- it is NOT a claim that this spread
+# is more accurate than v1-baseline. See configs/uncertainty_states.yaml for
+# the independence assumption and other modeling notes shared by both.
+#
+# Any substantive change to these values must bump mapping_version and must
+# not be made silently (model spec).
+
+mapping_version: v1-compressed
+
+states:
+  1:
+    label: Low
+    interpretation: Timing relatively predictable
+    delay_months: [0, 2.7, 5.4]
+    probabilities: [0.80, 0.15, 0.05]
+  2:
+    label: Moderate
+    interpretation: Meaningful schedule uncertainty
+    delay_months: [0, 5.4, 10.8]
+    probabilities: [0.60, 0.30, 0.10]
+  3:
+    label: High
+    interpretation: Large timing uncertainty
+    delay_months: [0, 8.1, 16.2]
+    probabilities: [0.40, 0.35, 0.25]
+  4:
+    label: Very high
+    interpretation: Wide range / substantial right-tail delay risk
+    delay_months: [0, 10.8, 21.6]
+    probabilities: [0.25, 0.35, 0.40]

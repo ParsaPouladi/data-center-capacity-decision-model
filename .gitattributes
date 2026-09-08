@@ -1,0 +1,25 @@
+# Normalize line endings. The repository stores text with LF; this keeps a
+# checkout on any OS from re-introducing CRLF and showing whole files as
+# modified. Run `git add --renormalize .` once after adding this file.
+
+* text=auto eol=lf
+
+*.py    text eol=lf
+*.pyi   text eol=lf
+*.md    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.toml  text eol=lf
+*.cfg   text eol=lf
+*.ini   text eol=lf
+*.txt   text eol=lf
+*.json  text eol=lf
+*.sh    text eol=lf
+.gitignore   text eol=lf
+.gitattributes text eol=lf
+
+# Binary / generated: never touch.
+*.png   binary
+*.jpg   binary
+*.pdf   binary
+*.ico   binary

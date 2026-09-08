@@ -1,0 +1,65 @@
+/*
+ * Self-hosted IBM Plex Sans.
+ *
+ * Source: the official IBM Plex distribution, github.com/IBM/plex releases --
+ *   @ibm/plex-sans-variable@0.2.0
+ *     fonts/complete/woff2/IBM Plex Sans Var-Roman.woff2
+ * License: SIL Open Font License 1.1, copied verbatim to
+ * web/public/fonts/LICENSE.txt.
+ *
+ * One text family, upright only. The companion Plex Serif face carried
+ * Technical Documentation prose until that split was retired: one product,
+ * one text family, so the documentation reads as the
+ * same application as the Decision page rather than as a separate serif
+ * publication embedded in it. The face and its @font-face rule are removed
+ * rather than left unreferenced. The release archives contain font binaries,
+ * per-subset CSS, and the license only: no install, build, or lifecycle
+ * script runs to use them. Nothing is fetched at runtime; there is no font
+ * CDN, npm font package, mirror, build step, or new dependency. Italic and
+ * small-caps are left to the browser's own synthesis, which the prose here
+ * uses sparingly.
+ *
+ * Mathematics does not use Plex. It uses STIX Two Math, self-hosted below.
+ *
+ * Source: the official STIX Fonts distribution, github.com/stipub/stixfonts,
+ *   release v2.13b171, fonts/static_otf_woff2/STIXTwoMath-Regular.woff2
+ *   sha256 0941913 35def3f0452c81ec0713cfc2f29bb6af8cecbf79b60881fbf2db97562
+ * License: SIL Open Font License 1.1, copied verbatim to
+ * web/public/fonts/STIX-LICENSE.txt. STIX Fonts is a trademark of the IEEE.
+ *
+ * One file, unmodified, upright only: the reviewed minimum, and the whole
+ * font is required rather than a subset because MathML depends on the
+ * OpenType MATH table and on the variant and assembly glyphs a subsetter
+ * would strip. Nothing is fetched at runtime; no CDN, no npm font package,
+ * no build step, no new dependency.
+ *
+ * Why a dedicated math font at all: MathML rendering quality is entirely a
+ * property of the font's MATH table. Left to whatever the reader's system
+ * provides, the same equation gets a differently proportioned fraction bar,
+ * differently positioned scripts, and -- the visible failure on this page --
+ * fences that do not stretch to the block they enclose, so a three-row
+ * piecewise definition renders against a single-row brace. STIX Two Math
+ * ships a complete MATH table and is metric-compatible with Times, which is
+ * what gives display equations their traditional typeset appearance.
+ */
+
+@font-face {
+  font-family: "IBM Plex Sans Var";
+  font-style: normal;
+  font-weight: 100 700;
+  font-stretch: 85% 100%;
+  font-display: swap;
+  src: url("/fonts/ibm-plex-sans-var-roman.woff2") format("woff2");
+}
+
+/* `block` rather than `swap`: equations swapped mid-read would reflow every
+   fence and script position on the page. The block period is short, the
+   fallback stack below still renders correct mathematics if the file never
+   arrives, and nothing above the equation depends on it. */
+@font-face {
+  font-family: "STIX Two Math";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fonts/stix-two-math.woff2") format("woff2");
+}

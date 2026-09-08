@@ -1,0 +1,183 @@
+/*
+ * Design tokens -- Data Center Capacity Decision Model.
+ *
+ * Non-canonical presentation layer. Light mode only.
+ *
+ * Visual direction: a warm-neutral paper ground, one column, hairline rules
+ * carrying structure instead of card borders, a single cool desaturated
+ * petrol accent, generous whitespace, a compressed type scale so the page
+ * reads as a technical document rather than a dashboard.
+ *
+ * Palette values are tunable provided the contrast requirements hold.
+ * Every foreground/background pair below has
+ * been checked against WCAG 2.1 (4.5:1 body text, 3:1 non-text/UI); ratios
+ * are noted where they are the binding constraint.
+ *
+ * NAMING: the canonical token set is the core vocabulary (--surface-*,
+ * --ink-*, --rule*, --data-*, --on-accent, --attention-*). The legacy
+ * names (--text-*, --border-*, --site-*, --warn-*, --surface-raised) are
+ * kept as thin aliases so existing components keep rendering while they
+ * are migrated to the canonical names; each alias is removed once nothing
+ * references it.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Surfaces: warm, low-chroma paper. Never pure white. ---- */
+  --surface-page: #faf8f4;
+  --surface-panel: #fffefb;
+  --surface-sunken: #f2eee7;
+
+  /* ---- Ink: warm near-black. ---- */
+  --ink-primary: #201d18; /* 15.8:1 on page, 16.6:1 on panel */
+  --ink-secondary: #56514a; /*  7.4:1 on page,  7.8:1 on panel */
+  /* Tuned darker than the §13 starting value (#857E74 -> ~3.9:1) so muted
+     copy -- hints, captions, fine print -- clears the 4.5:1 body-text bar. */
+  --ink-muted: #6e675c; /*  5.3:1 on page,  5.5:1 on panel */
+
+  /* ---- Rules: hairlines carry structure instead of card borders. ---- */
+  --rule: #e7e1d7; /* decorative separators only */
+  --rule-strong: #cdc5b7; /* heavier separators, table header edges */
+  /* Interactive control boundaries (inputs, selects, buttons, option
+     chips) need >= 3:1 on their own, so they use this instead of a rule. */
+  --border-input: #8a8069; /*  3.7:1 on page,  3.9:1 on panel */
+
+  /* ---- Accent: deep petrol. Calm, technical. Not purple, not terracotta. ---- */
+  --accent: #2e5c63; /*  7.0:1 on page,  7.4:1 on panel */
+  --accent-hover: #24494f; /*  9.3:1 on page */
+  --accent-tint: #e3eded; /* fills only; ink-primary on this is 14.1:1 */
+  --on-accent: #ffffff; /*  7.4:1 on --accent */
+
+  /* ---- Data hues: desaturated, warm-compatible, CVD-ordered. ---- */
+  /* Used as graphical marks (bars, series, swatches), never as text.
+     Each clears 3:1 on both page and panel. */
+  --data-1: #3e6e9e; /* blue   */
+  --data-2: #c4763c; /* amber  */
+  --data-3: #5a8f6b; /* green  */
+  --data-4: #8a6e9b; /* violet */
+
+  /* ---- Attention: the feasibility notice only, always with a text label. ---- */
+  --attention-ink: #7a5410; /*  6.4:1 on page,  6.1:1 on --attention-tint */
+  --attention-tint: #fbf3e2;
+
+  /* ---- Danger: the Analyze-local capacity-blocking message only, always
+     paired with explicit wording -- never a color-only signal. A restrained
+     warm red, kept inside the same low-chroma family as the rest of the
+     palette rather than a saturated alert red. ---- */
+  --danger-ink: #9a3324; /*  6.9:1 on page,  7.3:1 on panel */
+  --danger-tint: #fbeae6;
+
+  /* ---- Charts ---- */
+  --chart-surface: var(--surface-panel);
+  --chart-gridline: var(--rule);
+  --chart-axis: var(--rule-strong);
+  --chart-label: var(--ink-muted); /* 5.3:1 -- exceeds the 3:1 chart-ink bar */
+  --chart-series-primary: var(--accent);
+
+  /* ---- Focus ---- */
+  --focus-ring: #2e5c63; /* 7.0:1 non-text on page */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  /* ---- Spacing (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px; /* vertical rhythm between top-level document sections */
+
+  /* ---- Radius: small and functional only; 0 on rules. ---- */
+  --radius-sm: 3px; /* bars, badges */
+  --radius-md: 6px; /* panels, inputs */
+
+  /* ---- Typography ---- */
+  /* The approved self-hosted IBM Plex Sans variable face (O9); the refined
+     system stack below it remains the fallback, so the page is fully legible
+     before or without the font file. One text family carries the whole
+     product, Technical Documentation included: the earlier serif/sans split
+     between long-form documentation prose and the rest of the application
+     read as two different products bound together, and has been retired.
+     Only displayed mathematics leaves the family, for a face that
+     carries an OpenType MATH table. No Plex Mono, no Plex Serif.
+     See src/styles/fonts.css for source and license. */
+  --font-sans: "IBM Plex Sans Var", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  /* Display mathematics only. STIX Two Math carries an OpenType MATH table,
+     which is what makes fences stretch, fractions sit correctly, and scripts
+     position the way a typeset equation does; the fallbacks are the other
+     MATH-table faces a reader's system may already have, then the browser's
+     own default. See fonts.css for source and license. */
+  --font-math: "STIX Two Math", "Latin Modern Math", "XITS Math",
+    "Cambria Math", math, serif;
+
+  /* Scale: 1.20 ratio, deliberately compressed so the page reads as a
+     document. Line heights are applied per role in app.css. */
+  --text-xs: 0.75rem; /* 12px  -- eyebrows, labels, captions edge case */
+  --text-sm: 0.875rem; /* 14px  -- helper text, table cells, small copy */
+  --text-base: 1rem; /* 16px  -- body */
+  --text-md: 1.0625rem; /* 17px  -- h3 / subsection headings */
+  --text-lg: 1.25rem; /* 20px  -- intermediate emphasis (kept for existing use) */
+  --text-xl: 1.375rem; /* 22px  -- h2 / section headings */
+  --text-2xl: 2rem; /* 32px  -- h1 / display */
+  --text-result: 1.75rem; /* 28px  -- Key Result values, tabular */
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.6;
+
+  /* ---- Layout ---- */
+  /* Composition rule: explanatory text uses the horizontal space that
+     belongs to its section. A paragraph wraps
+     because its section, grid track or panel ran out of width, never because
+     a CSS cap stopped it early while empty canvas stood beside it.
+
+     What remains, therefore, is not a set of reading measures but two real
+     containers:
+       --app-max-width  how much of the desktop the product uses;
+       --measure-prose  the one deliberately contained block width, used where
+                        narrowness is the point (alert callouts).
+     Every other constraint is the section, track or panel the text sits in.
+     The Technical Documentation reading container is its own `doc-main`
+     column, which the canvas, the contents rail and the gap already bound. */
+  --measure-prose: 68ch;
+
+  --content-max-width: 880px;
+  --figure-max-width: 1120px;
+
+  /* The application canvas. Widened at large desktop widths so the product
+     composes across the screen instead of sitting in a narrow centered
+     column; the measure tokens keep text readable at every step. */
+  --app-max-width: 1360px;
+  /* The document page shares the application canvas exactly, so the header,
+     the page content and the footer sit on one pair of alignment lines
+     across both pages. */
+  --doc-max-width: var(--app-max-width);
+
+  /* ---- Legacy aliases -- migrated and removed per component. ---- */
+  --surface-raised: var(--surface-panel);
+  --text-primary: var(--ink-primary);
+  --text-secondary: var(--ink-secondary);
+  --text-muted: var(--ink-muted);
+  --border-hairline: var(--rule);
+  --border-strong: var(--rule-strong);
+  --accent-ink-on-accent: var(--on-accent);
+  --site-a: var(--data-1);
+  --site-b: var(--data-2);
+  --site-c: var(--data-3);
+  --warn-ink: var(--attention-ink);
+  --warn-bg: var(--attention-tint);
+  --warn-border: var(--rule-strong); /* no warning-yellow border survives */
+}
+
+/* Very wide desktops get more canvas, not longer lines. */
+@media (min-width: 1800px) {
+  :root {
+    --app-max-width: 1520px;
+  }
+}

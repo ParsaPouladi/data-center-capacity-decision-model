@@ -1,0 +1,44 @@
+# Energization uncertainty mapping: U_i -> delay distribution F_i
+#
+# Each state defines a discrete distribution over schedule delay (months),
+# applied identically to both tranche dates (model spec):
+#
+#   tau1_i(s) = tau1_bar_i + delta_i(s)
+#   tau2_i(s) = tau2_bar_i + delta_i(s)
+#
+# delta_i(s) >= 0 in v1 (no early delivery). These values are SYNTHETIC
+# assumptions, not empirical delay statistics (model spec).
+#
+# IMPORTANT MODELING ASSUMPTION:
+# Site delays are assumed INDEPENDENT of one another in this v1 uncertainty
+# engine. No cross-site correlation is modeled. Diversification findings
+# derived from this engine must later be stress-tested against correlated
+# delay scenarios (e.g. shared grid/regulatory/supply-chain risk) before
+# being treated as robust conclusions. See docs/assumptions.md.
+#
+# Any substantive change to these values must bump mapping_version and must
+# not be made silently (model spec).
+
+mapping_version: v1-baseline
+
+states:
+  1:
+    label: Low
+    interpretation: Timing relatively predictable
+    delay_months: [0, 3, 6]
+    probabilities: [0.80, 0.15, 0.05]
+  2:
+    label: Moderate
+    interpretation: Meaningful schedule uncertainty
+    delay_months: [0, 6, 12]
+    probabilities: [0.60, 0.30, 0.10]
+  3:
+    label: High
+    interpretation: Large timing uncertainty
+    delay_months: [0, 9, 18]
+    probabilities: [0.40, 0.35, 0.25]
+  4:
+    label: Very high
+    interpretation: Wide range / substantial right-tail delay risk
+    delay_months: [0, 12, 24]
+    probabilities: [0.25, 0.35, 0.40]

@@ -1,0 +1,34 @@
+# Power-delivery burden mapping: B_i -> (tau1_bar, tau2_bar)
+#
+# tau1_bar = nominal month the first tranche (alpha * K_i) becomes available
+# tau2_bar = nominal month full capacity (K_i) becomes available
+#
+# These values are SYNTHETIC assumptions for the stylized model (model spec).
+# They are not empirical claims about any real utility or facility timeline.
+#
+# Any substantive change to these values must bump mapping_version and must
+# not be made silently (model spec).
+
+mapping_version: v1-baseline
+
+states:
+  1:
+    label: Low
+    interpretation: Limited additional infrastructure required
+    tau1_bar: 18
+    tau2_bar: 24
+  2:
+    label: Moderate
+    interpretation: Meaningful local/substation upgrades required
+    tau1_bar: 24
+    tau2_bar: 30
+  3:
+    label: High
+    interpretation: Major dedicated infrastructure development
+    tau1_bar: 30
+    tau2_bar: 42
+  4:
+    label: Very high
+    interpretation: Major upstream/system infrastructure dependency
+    tau1_bar: 42
+    tau2_bar: 54

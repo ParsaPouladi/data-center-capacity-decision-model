@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Local environment files -- never commit real values (see *.env.example)
+.env
+.env.*
+!.env.example
+
+# Frontend (web/) build tooling
+web/node_modules/
+web/dist/
+
+# Playwright — runner output; browser binaries live in ~/.cache/ms-playwright
+web/test-results/
+web/playwright-report/
+web/blob-report/
+web/e2e/screenshots/
+web/.last-run.json

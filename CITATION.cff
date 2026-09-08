@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "Data Center Capacity Decision Model"
+abstract: >-
+  A stylized quantitative decision model for allocating required electrical
+  capacity across candidate data-center sites when power is delivered in
+  stages and its timing is uncertain. Limited, ordinal site knowledge is
+  resolved through explicit published mappings into phased power-delivery
+  profiles and finite delay distributions; the engine then evaluates
+  allocations by exact enumeration of the joint delay space (or seeded
+  Monte Carlo when that space is large), scoring each against development
+  cost and the expected delay burden under the objective
+  J = C_dev + lambda * E[L]. For one to three candidate sites the allocation
+  is optimized exactly as a linear program; for four to twelve sites the
+  application compares defined benchmark strategies and reports the best
+  among them. Inputs and worked examples are synthetic and stylized.
+type: software
+version: "1.0.0"
+license: Apache-2.0
+repository-code: "https://github.com/ParsaPouladi/data-center-capacity-decision-model"
+url: "https://capacity.parsapouladi.com"
+authors:
+  - given-names: Parsa
+    family-names: Pouladi
+    email: ParsaPouladi@outlook.com
+    orcid: "https://orcid.org/0009-0006-2257-391X"
+keywords:
+  - decision analysis
+  - capacity planning
+  - data centers
+  - power delivery
+  - optimization
+  - uncertainty
+  - linear programming
+  - Monte Carlo

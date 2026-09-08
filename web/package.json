@@ -1,0 +1,28 @@
+{
+  "name": "data-center-capacity-decision-model-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Public-application frontend. Non-canonical presentation layer over the committed trackc exports and the live API.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "typecheck:e2e": "tsc --noEmit -p e2e/tsconfig.json",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "recharts": "^3.10.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.1.0",
+    "typescript": "^7.0.0",
+    "vite": "^8.2.0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "kind": "capacity-allocation example index",
+  "mappings_file": "mappings.json",
+  "presets": [
+    {
+      "file": "balanced_portfolio.json",
+      "id": "balanced_portfolio",
+      "title": "Balanced portfolio"
+    },
+    {
+      "file": "capacity_constrained_portfolio.json",
+      "id": "capacity_constrained_portfolio",
+      "title": "Capacity-constrained portfolio"
+    },
+    {
+      "file": "cheap_site_risky_schedule.json",
+      "id": "cheap_site_risky_schedule",
+      "title": "Cheap site, risky schedule"
+    }
+  ]
+}

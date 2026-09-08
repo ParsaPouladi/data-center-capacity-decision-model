@@ -1,0 +1,3519 @@
+@import "./tokens.css";
+@import "./fonts.css";
+
+/* ---------- Reset ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--line-height-normal);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a,
+  button {
+    transition: color 180ms ease, background-color 180ms ease,
+      border-color 180ms ease;
+  }
+}
+
+/* Motion is minimal and explanatory (plan §14). Anything animated is
+   fully removed for readers who ask for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Focus ---------- */
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: -48px;
+  background: var(--accent);
+  color: var(--accent-ink-on-accent);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  z-index: 100;
+  transition: top 150ms ease;
+}
+
+.skip-link:focus-visible {
+  top: var(--space-3);
+}
+
+/* ---------- Utility ---------- */
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* Sections are separated by space and a single hairline -- not cards.
+   48px of padding on each side gives the ~96px top-level rhythm of §13. */
+.section {
+  padding: var(--space-7) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.section:first-of-type {
+  border-top: none;
+}
+
+.section-heading {
+  font-size: var(--text-xl);
+  line-height: var(--line-height-tight);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-3);
+}
+
+/* A section lede introduces a full-width figure, form or table, and belongs
+   to the same horizontal space that surface does. No measure cap and no
+   `balance`/`pretty`: either would break the line before the section itself
+   runs out of room, which is the composition defect this pass removes. It
+   wraps when the section edge is actually reached. */
+.section-subheading {
+  color: var(--ink-secondary);
+  font-size: var(--text-base);
+  margin-bottom: var(--space-6);
+}
+
+/* A section heading with a quiet contextual label on the same alignment
+   line, sitting at the far end of the canvas. */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.section-head .section-heading {
+  margin-bottom: 0;
+}
+
+/* ---------- App shell: header ---------- */
+
+.app-header {
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-page);
+}
+
+/* The header shares the canvas gutters, so the product identity, the page
+   content and the footer all sit on the same two alignment lines however
+   wide the desktop is. */
+.app-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-5);
+  flex-wrap: wrap;
+}
+
+.app-header__identity {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.app-header__title {
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.app-header__title a {
+  color: var(--ink-primary);
+  text-decoration: none;
+}
+
+.app-nav {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.app-nav__link {
+  display: inline-block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--ink-secondary);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+.app-nav__link:hover {
+  color: var(--ink-primary);
+  background: var(--accent-tint);
+}
+
+.app-nav__link[aria-current="page"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Narrow viewports: keep the identity block from staying one wide,
+   non-wrapping flex item that pushes the page past the viewport. */
+@media (max-width: 640px) {
+  .app-header__bar {
+    gap: var(--space-3);
+  }
+  .app-header__identity {
+    flex-wrap: wrap;
+    row-gap: var(--space-2);
+  }
+  .app-header__title {
+    white-space: normal;
+  }
+}
+
+/* ---------- App shell: footer ---------- */
+
+.app-footer {
+  border-top: 1px solid var(--rule);
+  background: var(--surface-page);
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  padding: var(--space-7) 0 var(--space-7);
+}
+
+.app-footer__inner {
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+@media (max-width: 640px) {
+  .app-footer__inner {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* Site-wide provenance line, once per page beneath the closing engagement
+   band -- quiet metadata, not a second message competing with the CTA
+   above it. */
+.app-footer__copyright {
+  margin-top: var(--space-5);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+
+/* ---------- Professional engagement surfaces ---------- */
+
+/* Two members of one system with different jobs. The lead panel (.cta--lead)
+   is discovery — a saturated petrol card in the hero, restrained inverse
+   text, one high-contrast action. The closing band (.cta--closing) is
+   conversion — a deeper full-width petrol band that names the deliverable
+   and the person. Both flat: no gradient, no shadow, no gloss, nothing that
+   reads as a signup form. */
+.cta {
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+
+.cta__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--accent);
+  margin-bottom: var(--space-3);
+}
+
+/* The one line that has to land: what the reader can ask for. */
+.cta__ask {
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -0.005em;
+  color: var(--ink-primary);
+  margin-bottom: var(--space-3);
+}
+
+.cta__lead {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-secondary);
+  max-width: 44ch;
+}
+
+.cta__action {
+  margin-top: var(--space-5);
+}
+
+/* An action control, not a sentence with a link in it: a filled target
+   carrying the verb on its first line and the address, quieter, on its
+   second, so it is unmistakably the thing to press. */
+.cta__link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface-panel);
+  color: var(--accent);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.cta__link-main {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.cta__link-addr {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.cta__link:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.cta__link-arrow {
+  font-size: var(--text-md);
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cta__link-arrow {
+    transition: transform 180ms ease;
+  }
+  .cta__link:hover .cta__link-arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* ---- Lead panel: the saturated discovery surface in the hero ---- */
+/* Height follows content — no stretch to the row, which would open a void
+   between the offer and the action. */
+.cta--lead {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.cta--lead .cta__eyebrow {
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: var(--space-4);
+}
+
+.cta--lead .cta__ask {
+  color: var(--on-accent);
+  font-size: var(--text-lg);
+  line-height: 1.28;
+}
+
+.cta--lead .cta__lead {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.cta--lead .cta__link {
+  background: var(--on-accent);
+  border-color: var(--on-accent);
+  color: var(--accent);
+}
+
+.cta--lead .cta__link:hover {
+  background: var(--accent-hover);
+  border-color: var(--on-accent);
+  color: var(--on-accent);
+}
+
+/* Below the hero's two-column breakpoint the panel spans the whole canvas.
+   Stacked, its copy kept a 44ch measure against a full-width saturated
+   ground, leaving an empty right half at 1024 and 768. It takes the row
+   composition the closing band already uses — message left, action right —
+   so the panel is composed at those widths while the copy keeps a readable
+   measure, and it still stacks cleanly once the message no longer fits. */
+@media (max-width: 1079px) {
+  .cta--lead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-5) var(--space-6);
+  }
+  .cta--lead .cta__body {
+    flex: 1 1 40ch;
+    min-width: min(100%, 32ch);
+  }
+  .cta--lead .cta__lead {
+    max-width: 62ch;
+    margin-bottom: 0;
+  }
+  .cta--lead .cta__action {
+    margin-top: 0;
+    flex: none;
+  }
+}
+
+/* ---- Closing band: the deeper, full-width conversion surface ---- */
+.cta--closing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5) var(--space-6);
+  flex-wrap: wrap;
+  background: var(--accent-hover);
+  color: var(--on-accent);
+  padding: var(--space-7) var(--space-6);
+}
+
+/* The message uses the band's width: it grows to consume the middle of the
+   canvas so the closing statement composes across the surface instead of
+   sitting as a narrow paragraph beside an isolated button. The measures are
+   wide enough that at desktop the headline sets on one line and the support
+   sentence on one or two, rather than stacking into six short lines. */
+.cta--closing .cta__body {
+  min-width: min(100%, 34ch);
+  flex: 1 1 60ch;
+}
+
+.cta--closing .cta__eyebrow {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* The closing band gets a heavier headline than the lead panel — a step up
+   in size so it commands the full-width surface and the message reads across
+   the canvas rather than as a caption beside the button. */
+.cta--closing .cta__ask {
+  color: var(--on-accent);
+  font-size: 1.75rem;
+  line-height: 1.22;
+  max-width: 30ch;
+  text-wrap: balance;
+}
+
+@media (min-width: 900px) {
+  .cta--closing .cta__ask {
+    max-width: none;
+  }
+}
+
+.cta--closing .cta__lead {
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 96ch;
+  margin-bottom: 0;
+  text-wrap: pretty;
+}
+
+.cta--closing .cta__action {
+  margin-top: 0;
+  flex: none;
+}
+
+.cta--closing .cta__link {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.7);
+  color: var(--on-accent);
+}
+
+.cta--closing .cta__link:hover {
+  background: var(--on-accent);
+  border-color: var(--on-accent);
+  color: var(--accent-hover);
+}
+
+/* ---------- Hero (page lead) ---------- */
+
+.hero {
+  padding: var(--space-7) 0 var(--space-6);
+}
+
+/* One grid for the whole lead: the masthead, introduction and boundary run
+   as the left column, the engagement panel as the right — so the panel
+   begins on the same top edge as the H1 and uses the hero's full height
+   instead of opening a void beneath a short introduction. */
+.hero__head {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (min-width: 1080px) {
+  .hero__head {
+    /* Both columns bounded so the panel sits beside the introduction rather
+       than being pushed to the far edge of a wide canvas with a hole in the
+       middle: the text column holds a generous reading measure, the panel
+       follows its content, and any remaining width falls as page margin. */
+    grid-template-columns: minmax(0, 44rem) minmax(316px, 372px);
+    gap: var(--space-7);
+    justify-content: start;
+  }
+}
+
+/* Wide desktop. At these widths the panel sat
+   beside the introduction with the whole remaining canvas empty to its right,
+   which read as an accident rather than as a margin. The text column takes
+   `1fr` here so the panel is carried out to the canvas's own right alignment
+   line — the same line the header, the workbench and the footer sit on — and
+   the composition spans the page it is actually given.
+
+   The text column growing does NOT run any line to the monitor's edge:
+   `.hero__title`, `.hero__lede`, `.hero__concept` and `.hero__evidence` each
+   carry their own bounded measure, so short supporting copy is not islanded
+   in a narrow column with dead space to its right; the panel is not widened
+   to fill anything, and its
+   `minmax(316px, 372px)` track is unchanged.
+   Below 1400px the bounded-column rule above still applies, which is what
+   keeps 1080 and 1024 free of a gap the canvas is not wide enough to earn. */
+@media (min-width: 1400px) {
+  .hero__head {
+    grid-template-columns: minmax(0, 1fr) minmax(316px, 372px);
+    justify-content: stretch;
+    gap: var(--space-8);
+  }
+}
+
+/* Title and authorship as one block at the head of the introduction column:
+   the H1 has room to sit on a single line at desktop and the byline reads as
+   its companion rather than as one more stacked band. */
+.hero__masthead {
+  margin-bottom: var(--space-5);
+}
+
+.hero__title {
+  font-size: var(--text-2xl);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  /* No ch cap: the desktop canvas has room for the title on one line, and a
+     ch measure was forcing an unnecessary two-line heading. It wraps
+     naturally at narrow widths. */
+  max-width: 46rem;
+  margin-bottom: var(--space-3);
+  text-wrap: balance;
+}
+
+/* Authorship, given real presence on the first screen without competing with
+   the H1: body-size lead-in, the name a step larger and set in primary ink. */
+.hero__byline {
+  font-size: var(--text-base);
+  color: var(--ink-muted);
+}
+
+.hero__byline strong {
+  font-size: var(--text-lg);
+  color: var(--ink-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* The introduction, the concept statement and the evidence line use the
+   column they are given. On the Decision page that column is the hero's own
+   text track, bounded beside the engagement panel; on Technical
+   Documentation it is the document canvas. None needs a second cap inside
+   it. */
+.hero__lede {
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* The thesis statement: kept at the lede's own weight, not
+   demoted to supporting copy, so it reads as the point rather than a
+   footnote to it. */
+.hero__concept {
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--ink-primary);
+  font-weight: 500;
+  margin-bottom: var(--space-4);
+}
+
+/* The external-evidence sentence: supporting weight, one step back from the
+   concept statement above it. */
+.hero__evidence {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-muted);
+}
+
+.hero__evidence a {
+  font-weight: 700;
+}
+
+/* ---------- Capability rail: the model's own three steps ---------- */
+
+.capability {
+  list-style: none;
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule-strong);
+}
+
+@media (min-width: 860px) {
+  .capability {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+.capability__step {
+  display: grid;
+  grid-template-columns: 1.9rem minmax(0, 1fr);
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
+  align-content: start;
+}
+
+/* A real anchor for each column, not a caption: set large, bold, in the
+   accent, and optically aligned to the cap height of the title beside it.
+   Clearly subordinate to the H1, clearly stronger than a label. */
+.capability__index {
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  align-self: start;
+  font-size: var(--text-result);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.capability__title {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: var(--text-md);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: var(--line-height-tight);
+}
+
+.capability__body {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-secondary);
+  /* Stacked (single column) this cap is the reading measure. In the
+     three-up rail the grid column is already a ~55-65ch measure, and a
+     tighter cap on top of it only stranded the last word of the third
+     description ("changes.") on its own line and left the column ragged. */
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+@media (min-width: 860px) {
+  .capability__body {
+    max-width: none;
+  }
+}
+
+/* ---------- Mechanism diagram ---------- */
+
+/* The panel hugs the drawing rather than the column. The wide diagram has a
+   natural width of five 184px station columns; stretched to the full document
+   surface with 48px of vertical padding it framed roughly as much empty
+   ground as figure. `fit-content` sizes the bordered panel to the drawing it
+   contains, `max-width: 100%` still lets the drawing scale down inside a
+   narrower column, and the panel keeps the document's own left alignment
+   line. Nothing about the diagram's content, sequence or labelling changes. */
+.mechanism-diagram {
+  width: fit-content;
+  max-width: 100%;
+  background: var(--surface-panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+}
+
+/* No `display` here: the global `svg` reset already sets it, and repeating it
+   at this higher specificity would defeat the row/stacked layout swap below.
+   `max-width: 100%` (global reset) lets the drawing shrink to fit a narrower
+   column; `width` caps it at its natural size so it is never upscaled into
+   soft, oversized type. */
+.mechanism-diagram svg {
+  margin: 0 auto;
+  height: auto;
+}
+
+.mechanism-diagram__wide {
+  display: block;
+}
+
+.mechanism-diagram__narrow {
+  display: none;
+}
+
+/* Swapped well above the phone breakpoint: below roughly 900px the five-node
+   row has to scale down far enough that its type stops being readable, so
+   the stacked layout takes over while there is still room for it. */
+@media (max-width: 900px) {
+  .mechanism-diagram {
+    /* The stacked diagram is width-driven rather than natural-width, so the
+       panel goes back to an ordinary block here. */
+    width: auto;
+    padding: var(--space-4);
+  }
+  .mechanism-diagram__wide {
+    display: none;
+  }
+  .mechanism-diagram__narrow {
+    display: block;
+    /* Fills a tablet column rather than sitting at its natural size in the
+       middle of one, and is capped so a phone renders the timeline close to
+       1:1 — its 14px labels must not scale down into the small type the
+       previous stacked layout produced. */
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* ---------- Mechanism diagram marks ---------- */
+
+/* The input layer: one flat band the user-set cards sit on, labelled once.
+   Everything drawn off this band is on the computed rule, which is what
+   makes a second legend unnecessary. */
+.mech-rail {
+  fill: var(--surface-sunken);
+  stroke: none;
+}
+
+.mech-rail-label {
+  fill: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* The computed chain: one continuous rule carrying numbered stations. */
+.mech-rule {
+  stroke: var(--rule-strong);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.mech-station {
+  fill: var(--accent);
+  stroke: none;
+}
+
+/* The terminal station is the model's output, and is the one place the
+   figure raises a step above the others. */
+.mech-station-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.45;
+}
+
+.mech-station-number {
+  fill: var(--on-accent);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mech-label {
+  fill: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.mech-label--terminal {
+  font-weight: 700;
+}
+
+/* User-set inputs: a dashed rule AND a tint, so the distinction from the
+   computed chain survives greyscale and colour-vision differences. */
+.mech-input-rect {
+  fill: var(--accent-tint);
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 5 3;
+}
+
+.mech-input-text {
+  fill: var(--accent-hover);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.mech-connector {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+  fill: none;
+}
+
+.mech-arrowhead {
+  fill: var(--rule-strong);
+}
+
+.mech-arrowhead--input {
+  fill: var(--accent);
+}
+
+/* ---------- Data tables ---------- */
+
+.data-table {
+  font-size: var(--text-sm);
+}
+
+/* 12A: a caption is a sentence about the table, so it keeps a reading measure
+   even where the table itself spans the full canvas. The page is not narrowed;
+   only the prose is. */
+.data-table caption {
+  text-align: left;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-3);
+  max-width: 78ch;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+
+/* Header row: a sunken tint and a firmer bottom rule -- no vertical rules,
+   no zebra striping (plan §13). */
+.data-table thead th {
+  background: var(--surface-sunken);
+  border-bottom-color: var(--rule-strong);
+}
+
+.data-table th {
+  color: var(--ink-secondary);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.data-table td.num,
+.data-table th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The closing rule is dropped from the whole last row, row header included —
+   removing it from the data cells alone leaves a stub rule under the first
+   column, which is glaring once a table spans the full canvas. */
+.data-table tbody tr:last-child td,
+.data-table tbody tr:last-child th {
+  border-bottom: none;
+}
+
+/* Named only where a table is genuinely wider than the viewport: at desktop
+   widths the table fits and the cue would be noise. */
+.table-scroll-cue {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .table-scroll-cue {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35em;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--ink-muted);
+  }
+  .table-scroll-cue__arrow {
+    font-size: var(--text-sm);
+    line-height: 1;
+  }
+}
+
+/* The scroll container is focusable where it carries a label, so the columns
+   off screen are reachable with the arrow keys and not by touch alone. */
+.table-scroll[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  /* Positioned so any absolutely-positioned descendant (e.g. a
+     .visually-hidden header label) is contained and clipped here rather
+     than escaping to the viewport and creating page-level scroll when the
+     table is wider than its column. */
+  position: relative;
+}
+
+/* ---------- Site badge ---------- */
+
+.site-swatch {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 2px;
+  margin-right: 0.45em;
+  vertical-align: middle;
+}
+
+/* ---------- Long-form documentation prose ---------- */
+
+.prose h2 {
+  font-size: var(--text-xl);
+  line-height: var(--line-height-tight);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+
+.prose h3 {
+  font-size: var(--text-md);
+  font-weight: 600;
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+/* The document column itself is the reading container (see the `.doc-main`
+   note below): no inner text box is imposed on top of it, so every running
+   block shares one right edge, which is the edge of the column. */
+.prose p {
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.prose ul,
+.prose ol {
+  color: var(--ink-secondary);
+  margin: 0 0 var(--space-3);
+  padding-left: 1.4em;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li {
+  padding-left: 0.2em;
+}
+
+.prose li:last-child {
+  margin-bottom: 0;
+}
+
+.toc {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  padding: var(--space-4) var(--space-5);
+}
+
+.toc__title {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: var(--space-2);
+}
+
+.toc ol {
+  list-style: decimal;
+  padding-left: 1.25em;
+  display: grid;
+  gap: 0.35em;
+  font-size: var(--text-sm);
+}
+
+/* Lettered-section pages (Limits) carry their own A./B./… labels. */
+.toc--lettered ol {
+  list-style: none;
+  padding-left: 0;
+}
+
+.callout {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-tint);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--ink-primary);
+}
+
+/* ---------- Shared small text ---------- */
+
+.fine-print {
+  color: var(--ink-muted);
+  font-size: var(--text-xs);
+  margin-top: var(--space-3);
+}
+
+.subsection-heading {
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin: var(--space-6) 0 var(--space-3);
+}
+
+.callout--warn {
+  border-left-color: var(--warn-border);
+  background: var(--warn-bg);
+  color: var(--text-primary);
+}
+
+.callout--warn strong {
+  color: var(--warn-ink);
+}
+
+/* ---------- Chart figure wrapper ---------- */
+
+.chart-figure {
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  padding: var(--space-4) var(--space-4) var(--space-2);
+}
+
+.chart-figure__plot {
+  width: 100%;
+  overflow-x: auto;
+  /* The tradeoff figure positions its readout against this box. */
+  position: relative;
+}
+
+/* ---------- Cost / delay tradeoff figure ---------- */
+
+/* Marks are inspection targets, and are drawn to look like it: a pointer
+   cursor, a hit area larger than the glyph, and a visible response to hover
+   and to keyboard focus alike. */
+.scatter-mark {
+  cursor: pointer;
+}
+
+.scatter-mark__hit {
+  fill: transparent;
+  stroke: none;
+}
+
+/* Benchmarks carry a restrained fill of the accent, not a hollow outline:
+   they are real analytical alternatives and should not read as empty. */
+.scatter-mark__glyph {
+  fill: var(--accent);
+  fill-opacity: 0.16;
+  stroke: var(--accent);
+  stroke-width: 2.25;
+}
+
+/* The model allocation is the focal point of the figure: solid, larger, and
+   ringed, so it is not one of four similar marks. */
+.scatter-mark--model .scatter-mark__glyph {
+  fill: var(--accent);
+  fill-opacity: 1;
+  stroke: var(--accent);
+}
+
+.scatter-mark__halo {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.4;
+}
+
+/* Inspection state is expressed in CSS, not in React state: re-rendering the
+   chart to highlight a mark replaces its DOM node, which loses the pointer
+   and focus events that close the readout. */
+.scatter-mark:hover .scatter-mark__glyph,
+.scatter-mark:focus-visible .scatter-mark__glyph {
+  stroke-width: 3.25;
+  fill-opacity: 0.28;
+}
+
+.scatter-mark--model:hover .scatter-mark__glyph,
+.scatter-mark--model:focus-visible .scatter-mark__glyph {
+  fill-opacity: 1;
+}
+
+.scatter-mark:hover .scatter-mark__halo,
+.scatter-mark:focus-visible .scatter-mark__halo {
+  opacity: 0.65;
+}
+
+.scatter-mark:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* The readout. Positioned from the plot's own top-left corner and translated
+   into place by the component, which measures the plot and the readout and
+   clamps the result inside the plot box — so a mark at any edge, including the
+   left and top edges the previous percentage offsets could not see, keeps its
+   readout fully within the figure. Inert to the pointer, so moving toward it
+   never dismisses it by leaving the mark's own hit area.
+
+   `max-width` is capped against the plot rather than at a fixed 310px alone:
+   on a narrow layout a fixed cap can exceed the plot's own width, and no
+   amount of clamping can fit a box into a space smaller than itself. */
+.scatter-readout {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  pointer-events: none;
+  width: max-content;
+  /* The 16px is the readout's own 8px inset on both sides (READOUT_EDGE_PAD
+     in CostDelayScatter). A plain 100% let the readout be exactly as wide as
+     the plot, and the inset then pushed its right edge past the plot's own
+     box, which turned the figure into a horizontally scrolling region on
+     narrow screens. */
+  max-width: min(310px, calc(100% - 16px));
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.scatter-readout__title {
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--ink-primary);
+  margin-bottom: var(--space-2);
+}
+
+.scatter-readout__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--space-4);
+  row-gap: 2px;
+  margin: 0;
+}
+
+.scatter-readout__grid dt {
+  color: var(--ink-secondary);
+}
+
+.scatter-readout__grid dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-primary);
+  white-space: nowrap;
+}
+
+.scatter-readout__allocation {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--rule);
+  color: var(--ink-secondary);
+}
+
+/* Shape key. Below the plot rather than above it, so the figure opens on the
+   data; the shapes are drawn by the same code that draws the marks. The
+   descendant selector is deliberate: the document's `.prose ul` rule sets a
+   grid list, which would stack the key one row per entry. */
+.chart-figure .scatter-key {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  max-width: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--ink-secondary);
+}
+
+.scatter-key__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.scatter-key__glyph {
+  flex: none;
+  overflow: visible;
+}
+
+.scatter-hint {
+  color: var(--ink-secondary);
+  font-weight: 600;
+}
+
+/* Series key for the λ-allocation area chart. A compact row directly under
+   the plot, outside the data area, so it never competes with the regime and
+   boundary annotations that sit along the top of the plotting region. The
+   descendant selector defeats the document's `.prose ul` grid-list rule. */
+.chart-figure .chart-key {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  max-width: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--ink-secondary);
+}
+
+.chart-key__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.chart-key__swatch {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  /* The swatch background is set inline to the series colour; the 0.55
+     opacity here matches the fill opacity of the plotted area it stands for. */
+  opacity: 0.55;
+}
+
+/* Key entries for drawn rules rather than filled series: a short vertical
+   stroke matching the line it stands for. */
+.chart-key__rule {
+  flex: none;
+  width: 0;
+  height: 14px;
+  border-left-width: 2px;
+}
+
+.chart-key__rule--cursor {
+  border-left-style: solid;
+  border-left-color: var(--accent);
+}
+
+.chart-key__rule--boundary {
+  border-left-style: dashed;
+  border-left-color: var(--text-secondary);
+}
+
+/* ---------- Allocation bars ---------- */
+
+.alloc-bars {
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  padding: var(--space-5);
+}
+
+.alloc-bars__scale-note {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.alloc-bars__list {
+  list-style: none;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.alloc-bars__row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: var(--space-2) var(--space-3);
+  align-items: center;
+}
+
+.alloc-bars__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.alloc-bars__track-wrap {
+  grid-column: 2;
+}
+
+.alloc-bars__track {
+  position: relative;
+  height: 22px;
+  min-width: 2px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-raised),
+    var(--surface-raised) 5px,
+    var(--border-hairline) 5px,
+    var(--border-hairline) 6px
+  );
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.alloc-bars__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  min-width: 1px;
+}
+
+/* The co-optimal span on a bar, for an effectively tied result.
+   Two bracket rules alone encoded a genuine range identically to a range of
+   zero width, while the note beside the bars promised a visible span. The
+   tinted ground between the brackets makes a real range read as a span; where
+   a site does not move across the tied set the brackets meet and the mark
+   collapses to a single tick, which is exactly what the data say and what the
+   note now states. Nothing is widened to make it visible. */
+.alloc-bars__bound {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  min-width: 3px;
+  background: color-mix(in srgb, var(--ink-primary) 16%, transparent);
+  border-left: 2px solid var(--ink-primary);
+  border-right: 2px solid var(--ink-primary);
+}
+
+.alloc-bars__values {
+  grid-column: 2;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.alloc-bars__x {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.alloc-bars__of,
+.alloc-bars__cap {
+  color: var(--text-muted);
+}
+
+@media (max-width: 560px) {
+  .alloc-bars__row {
+    grid-template-columns: 1fr;
+  }
+  .alloc-bars__track-wrap,
+  .alloc-bars__values {
+    grid-column: 1;
+  }
+}
+
+/* ---------- Headline results ---------- */
+
+/* One grid for the whole list, not one per row: the four values have to land
+   on a single left edge, which per-row grids cannot guarantee once a column
+   is content-sized. The row wrappers stay in the DOM for the dl grouping and
+   drop out of layout with `display: contents`. */
+.headline-results {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(9rem, auto) minmax(0, 1.3fr);
+  /* No column gap: the separating rule is drawn per cell, and a gap would
+     break it into three floating dashes. The gutter is cell padding. */
+  column-gap: 0;
+  border-top: 1px solid var(--border-strong);
+  align-items: baseline;
+}
+
+.headline-results__row {
+  display: contents;
+}
+
+.headline-results__row > * {
+  padding: var(--space-4) 0;
+}
+
+/* The separating rule is one full-width grid item per row, not a border on
+   each cell: baseline-aligned cells have different heights, so per-cell
+   borders come out as three dashes at three different heights. A row with
+   `display: contents` still generates its ::after, which lands in the grid. */
+.headline-results__row::after {
+  content: "";
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.headline-results__row:last-child::after {
+  border-bottom: none;
+}
+
+.headline-results__term,
+.headline-results__value {
+  padding-right: var(--space-5);
+}
+
+.headline-results__term {
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.headline-results__value {
+  /* <dd> carries a 40px inline-start margin by default, which would push the
+     value off its own grid column. */
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.headline-results__def {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  max-width: 60ch;
+}
+
+@media (max-width: 720px) {
+  .headline-results {
+    display: block;
+  }
+  .headline-results__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+  /* Stacked, the rule belongs to the row itself; the ::after row separator
+     is redundant here, and a closing rule would double up against whatever
+     section rule follows the list. */
+  .headline-results__row:last-child {
+    border-bottom: none;
+  }
+  .headline-results__row::after {
+    display: none;
+  }
+  .headline-results__row > * {
+    padding: 0;
+    border-bottom: none;
+  }
+}
+
+/* ================================================================== */
+/* Live interactive path                                              */
+/* ================================================================== */
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-input);
+  background: var(--surface-panel);
+  color: var(--ink-primary);
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Inactive, but still readable. At 0.5 the primary button's label fell to
+   2.4:1 against its own fill — disabled controls are exempt from the WCAG
+   contrast requirement, but the blank-first state opens on this control and
+   it should be legible. The fill stays visibly washed against the enabled
+   state, so the control still reads as unavailable. */
+.btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* The primary action is the control the blank first load opens on, so its
+   unavailable state has to be unmistakable at a glance rather than a slightly
+   washed version of the enabled fill. It drops the accent ground entirely and
+   sits on the sunken surface: clearly inert, still fully legible (secondary
+   ink on the sunken surface stays above the body-text contrast bar). The
+   reason is carried in the hint beside it, named by aria-describedby. */
+.btn--primary:disabled {
+  opacity: 1;
+  background: var(--surface-sunken);
+  border-color: var(--rule-strong);
+  color: var(--ink-secondary);
+}
+
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink-on-accent);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--on-accent);
+}
+
+.btn--ghost {
+  background: transparent;
+}
+
+.btn--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.btn--link {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+/* ---------- Callout: live-result (OK) state ---------- */
+
+.callout--ok {
+  border-left-color: var(--data-3);
+  background: var(--surface-sunken);
+  color: var(--ink-primary);
+}
+
+/* ---------- Scenario editor form ---------- */
+
+.editor {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.editor__group {
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  margin: 0;
+  /* <fieldset> defaults to min-width: min-content, which lets a wide child
+     (the sites table / its selects) push the group past the canvas on
+     narrow viewports. */
+  min-width: 0;
+}
+
+.editor__group legend {
+  padding: 0 var(--space-2);
+  margin: 0;
+}
+
+.field {
+  display: block;
+  margin-top: var(--space-4);
+}
+
+.field__label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.field__hint {
+  display: block;
+  color: var(--ink-muted);
+  font-size: var(--text-xs);
+  margin-top: var(--space-2);
+  max-width: 72ch;
+}
+
+.field__input {
+  font: inherit;
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  color: var(--ink-primary);
+  max-width: 100%;
+}
+
+.field__input:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.field__input--narrow {
+  width: 8rem;
+}
+
+.field__input--id {
+  width: 5rem;
+}
+
+.editor__errors {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
+  list-style: disc;
+}
+
+.editor__errors li {
+  margin-top: var(--space-1);
+}
+
+/* ---------- Scenario builder ---------- */
+
+/* A short line under each block legend — sets context without a card. It
+   introduces the whole fieldset, so it uses the fieldset's width. */
+.editor__group-lede {
+  margin: var(--space-1) 0 var(--space-2);
+  color: var(--ink-secondary);
+  font-size: var(--text-sm);
+}
+
+/* ---------- The requirement block: three aligned primary controls ---------- */
+
+/* Auto-placement puts the three controls in row 1 and the three helper notes
+   in row 2 of one grid, so labels share a top line, inputs share a baseline,
+   and the notes share a top line — whatever extra material one control
+   carries. No filler copy is used to level the columns. */
+.req-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--space-6);
+  row-gap: var(--space-3);
+  margin-top: var(--space-4);
+  align-items: start;
+}
+
+.req-grid__control > .field__input {
+  width: 100%;
+  max-width: 13rem;
+}
+
+/* Number first, slider beside it: the control row stays one line high in
+   every column, which is what keeps the three columns aligned. */
+.req-grid__lambda {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.req-grid__lambda > .field__input {
+  width: 100%;
+  max-width: 8rem;
+}
+
+.field__lambda-slider {
+  flex: 1 1 7rem;
+  min-width: 6rem;
+  max-width: 16rem;
+  accent-color: var(--accent);
+}
+
+/* Shown in place of the quick-set slider when the entered value is outside
+   its convenience range. Neutral ink: a larger delay consequence is valid,
+   it simply has no position on a 0-0.25 track. */
+.field__hint--lambda {
+  margin-top: var(--space-2);
+  max-width: 44ch;
+}
+
+/* Balanced rather than ragged: these notes are two or three short lines, and
+   left to flow they stranded a single word (or a bare "72.") on the last
+   line beside the control they explain. */
+/* Same reasoning as .state-meaning: the definition of the delay consequence
+   decides how every result below is read, so it is legible supporting text. */
+.req-grid__note {
+  color: var(--ink-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  max-width: 44ch;
+  text-wrap: balance;
+}
+
+@media (max-width: 760px) {
+  .req-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-2);
+  }
+  /* Stacked, each note must follow its own control rather than trailing all
+     three of them. */
+  .req-grid__control {
+    margin-top: var(--space-4);
+  }
+  .req-grid__control:nth-of-type(1) {
+    order: 1;
+  }
+  .req-grid__note:nth-of-type(1) {
+    order: 2;
+  }
+  .req-grid__control:nth-of-type(2) {
+    order: 3;
+  }
+  .req-grid__note:nth-of-type(2) {
+    order: 4;
+  }
+  .req-grid__control:nth-of-type(3) {
+    order: 5;
+  }
+  .req-grid__note:nth-of-type(3) {
+    order: 6;
+  }
+}
+
+/* Candidate sites: a table-like grid at >= 900px, stacked cards below. One
+   set of controls; visible per-cell labels double as row-1 headings via the
+   aria-hidden header strip on wide screens. */
+.sites {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.sites__head {
+  display: none;
+}
+
+.sites__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+}
+
+.sites__cell {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+}
+
+.sites__cell-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.sites__cell .field__input {
+  width: 100%;
+}
+
+.sites__cell--action {
+  align-self: end;
+}
+
+/* The published physical meaning of an ordinal level is the whole point of
+   the translation this product performs -- it is what turns "complexity 3"
+   into months. Set as supporting body text, not as a footnote under the
+   control. */
+.state-meaning {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--ink-secondary);
+  max-width: 44ch;
+}
+
+.sites__actions {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-top: var(--space-4);
+}
+
+.sites__legend {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-xs);
+  color: var(--ink-secondary);
+}
+
+/* The feasibility pre-check: a neutral note, not a warning box. */
+.editor__note {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--rule-strong);
+  background: var(--surface-sunken);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: var(--text-sm);
+  color: var(--ink-primary);
+  max-width: 74ch;
+}
+
+/* The capacity shortfall itself has to be visible at a
+   glance here, not only readable after parsing a full sentence. A small
+   chip carries the number; the sentence beside it still says the whole
+   thing in words. Neutral treatment throughout -- this is a diagnostic
+   about the inputs, not yet the blocking reason (that lives beside Analyze,
+   `.analyze-blocker`, below). */
+.capacity-gap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.capacity-gap__chip {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-panel);
+  min-width: 9rem;
+}
+
+.capacity-gap__chip-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-muted);
+}
+
+.capacity-gap__chip-value {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--attention-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.capacity-gap__text {
+  flex: 1 1 22rem;
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .sites {
+    gap: 0;
+  }
+
+  .sites__head,
+  .sites__row {
+    grid-template-columns:
+      minmax(4rem, 0.6fr) minmax(6rem, 0.8fr) minmax(6rem, 0.9fr)
+      minmax(11rem, 1.4fr) minmax(11rem, 1.4fr) auto;
+    gap: var(--space-3);
+    align-items: start;
+  }
+
+  .sites__head {
+    display: grid;
+    padding: var(--space-2) var(--space-4);
+    background: var(--surface-sunken);
+    border: 1px solid var(--rule-strong);
+    border-bottom: none;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-secondary);
+  }
+
+  .sites__row {
+    border-radius: 0;
+    border-top: none;
+  }
+
+  .sites__row:first-of-type {
+    border-top: 1px solid var(--rule);
+  }
+
+  .sites__row:last-of-type {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+
+  /* Header strip carries the column names; keep the <label> for a11y and
+     name-based testing, but take it out of the visual flow. */
+  .sites__cell-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sites__cell--action {
+    align-self: start;
+  }
+}
+
+/* ---------- λ sensitivity cursor ---------- */
+
+.lambda-panel {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.lambda-cursor {
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.lambda-cursor input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.lambda-cursor input[type="range"]:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.lambda-cursor__readout {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.lambda-cursor__readout p {
+  margin: 0;
+}
+
+/* ================================================================== */
+/* Workbench-first Decision page                                       */
+/* ================================================================== */
+
+/* The application canvas. One set of gutters shared by the lead, the
+   workbench, every result section and the footer, so the whole product has a
+   single left and right alignment line. Information surfaces take the full
+   canvas; running prose is held to its own measure inside it. */
+.app-canvas {
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+@media (max-width: 640px) {
+  .app-canvas {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* Width system inside the wide canvas: explanatory copy that introduces
+   or annotates a full-canvas surface -- section ledes, figure captions,
+   builder helper lines, the closing note -- uses the horizontal space of
+   the section it belongs to.
+   Successive intermediate caps (68ch, then 92ch) all produced the same
+   defect: a two-line text island with several hundred pixels of empty canvas
+   beside it. The section is the constraint, and it is the only one.
+
+   Two kinds of text are deliberately exempt, because their narrowness is
+   itself meaningful rather than accidental:
+     - alert callouts and structural notes, which are contained blocks;
+     - helper text belonging to one form control, which must stay beside the
+       control it explains. */
+.app-canvas .callout {
+  max-width: var(--measure-prose);
+}
+
+/* ---------- Scenario builder ---------- */
+
+.workbench {
+  padding: var(--space-6) 0 var(--space-7);
+  border-top: 1px solid var(--border-hairline);
+}
+
+.workbench__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.workbench__head .section-subheading {
+  margin-bottom: 0;
+}
+
+.example-menu {
+  display: grid;
+  gap: var(--space-1);
+  flex: 0 0 auto;
+  min-width: 14rem;
+}
+
+.example-menu__label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+/* ---------- Analyze bar ---------- */
+
+/* A quiet functional control area, not a highlighted panel: a near-white
+   ground and a hairline border,
+   so the accent-filled Analyze button is the only strong emphasis here and
+   this surface does not read as a third tinted box stacked with the offer
+   above it and the decision synthesis below. */
+.analyze-bar {
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* One control system on a shared row. The three interactive controls --
+   Analyze, the example selector and Clear -- occupy a single grid row so
+   their top and bottom edges line up; each column carries its own label in
+   the row above and its helper/status in the row below, in dedicated grid
+   tracks, so supporting text can never move a control off the shared line.
+   (The earlier `align-items: end` flex row let the example column's
+   "Edited from ..." status push its select upward, leaving the three
+   controls at three different heights.) */
+.analyze-bar__actions {
+  display: grid;
+  grid-template-columns: auto minmax(12rem, 18rem) auto;
+  grid-template-areas:
+    ".    menu-label      ."
+    "run  menu-control    clear"
+    ".    menu-helper     .";
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  justify-content: start;
+  align-items: center;
+}
+
+/* The example menu contributes its three parts (label / select / status)
+   directly to the shared grid rather than as one centred block. */
+.analyze-bar__actions .example-menu {
+  display: contents;
+}
+
+.analyze-bar__actions .btn--primary {
+  grid-area: run;
+}
+.analyze-bar__actions .btn--ghost {
+  grid-area: clear;
+}
+.analyze-bar__actions .example-menu__label {
+  grid-area: menu-label;
+}
+.analyze-bar__actions .example-menu__select {
+  grid-area: menu-control;
+  width: 100%;
+}
+.analyze-bar__actions .example-menu__hint {
+  grid-area: menu-helper;
+  margin: 0;
+}
+
+/* The control row takes one height -- the three controls stretch to the
+   tallest of them (the large Analyze button) and centre their own content,
+   so their edges align with no per-control offset. */
+.analyze-bar__actions .btn--primary,
+.analyze-bar__actions .btn--ghost,
+.analyze-bar__actions .example-menu__select {
+  align-self: stretch;
+}
+.analyze-bar__actions .btn--primary,
+.analyze-bar__actions .btn--ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analyze-bar .field__hint {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  /* Stack to one column: each control keeps its label above and its helper
+     below, with the Analyze column leading. */
+  .analyze-bar__actions {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "run"
+      "menu-label"
+      "menu-control"
+      "menu-helper"
+      "clear";
+    row-gap: var(--space-2);
+  }
+  .analyze-bar__actions .btn--primary,
+  .analyze-bar__actions .btn--ghost {
+    justify-self: start;
+  }
+}
+
+/* The action-local blocking reason: why Analyze specifically is disabled,
+   stated in the same breath as the number that would fix it. The only
+   restrained red in the product, and it never stands for the message alone
+   -- the text always states the exact shortfall in words, so nothing here
+   depends on color to be understood. */
+.analyze-blocker {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--danger-ink);
+  background: var(--danger-tint);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--danger-ink);
+}
+
+.btn--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-base);
+}
+
+/* ---------- Results region ---------- */
+
+.results-note {
+  margin-top: var(--space-6);
+}
+
+/* Empty state: one quiet line of body text, not a callout (plan §4.1). */
+.results-empty {
+  margin-top: var(--space-6);
+  color: var(--ink-secondary);
+  font-size: var(--text-base);
+}
+
+.results {
+  margin-top: var(--space-5);
+  /* After a completed user-initiated analysis the viewport and programmatic
+     focus are moved to the top of this region (ScenarioWorkbench), so leave
+     a little breathing room above the first heading rather than butting it
+     against the viewport edge. */
+  scroll-margin-top: var(--space-6);
+}
+
+/* This region is the programmatic focus target for a completed analysis, not
+   an interactive control: it takes focus only to carry keyboard and
+   screen-reader users to the new result, so it shows no focus ring of its
+   own. Focus styling on the controls and links inside it is unchanged. */
+.results:focus {
+  outline: none;
+}
+
+/* A successful analysis moves straight into the result; the only context
+   carried over is which example is loaded, as a quiet label on the heading
+   line rather than a callout above the answer. */
+.results-context {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+/* ---------- The decision: allocation beside the decision numbers ---------- */
+
+.section--decision {
+  padding-top: var(--space-6);
+}
+
+.decision-grid {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* Wide desktops read the answer and its four numbers together, side by side,
+   rather than scrolling from one to the other. */
+@media (min-width: 1100px) {
+  .decision-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: var(--space-8);
+  }
+}
+
+.decision-grid .subsection-heading {
+  margin-top: 0;
+}
+
+/* ---------- Conditional structural note ---------- */
+
+/* Present only when the structure of the result is not visible from the
+   numbers: a forced allocation, a tie, a cost-only run, comparison mode, or
+   a result no modeled outcome delivers on time. */
+.decision-note {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--rule-strong);
+  background: var(--surface-sunken);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  max-width: 78ch;
+}
+
+.decision-note__list {
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-secondary);
+}
+
+/* The decisive structural conclusion inside a note — that there is no
+   allocation choice at all, or that no modeled outcome reaches the
+   requirement on time. It is the reason the note exists, and it was reading
+   as skippable secondary text at the same weight and colour as the sentence
+   explaining it. It is marked up as `<strong>` by the note generator, so this
+   rule renders semantic emphasis rather than manufacturing it; the
+   surrounding explanatory text is set a step back so the conclusion carries
+   the contrast. */
+.decision-note__list strong {
+  color: var(--ink-primary);
+  font-weight: 700;
+}
+
+/* ---------- Decision sensitivity ---------- */
+
+/* Part of the decision composition, not a footnote under it: it shares the
+   decision grid's gutters, and at desktop it reads as "label | insight" —
+   the heading in a fixed rail, the finding beside it using the width. The
+   firmer top rule ties it to the block above rather than floating it off. */
+.sensitivity {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule-strong);
+  display: grid;
+  gap: var(--space-2) var(--space-6);
+}
+
+@media (min-width: 1100px) {
+  .sensitivity {
+    grid-template-columns: minmax(0, 208px) minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+
+.sensitivity__label {
+  margin: 0;
+}
+
+/* The finding uses the track beside the label rail, which is the point of the
+   two-column composition; a prose cap inside it put the sentence back in a
+   narrow column with the rest of the track empty. */
+.sensitivity__body {
+  min-width: 0;
+}
+
+.sensitivity__sentence {
+  font-size: var(--text-md);
+  line-height: var(--line-height-normal);
+  color: var(--ink-primary);
+}
+
+/* The two substantive findings carry the emphasis: the breakpoint value as
+   the key figure, the direction of the capacity move as the consequence. */
+.sensitivity__threshold {
+  color: var(--accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sensitivity__shift {
+  color: var(--ink-primary);
+  font-weight: 700;
+}
+
+.sensitivity__more {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+/* ---------- Close of the decision story ---------- */
+
+/* Where the result hands off to the mathematics behind it. Deliberately the
+   quietest thing in the results region: one line of secondary text under a
+   hairline, no panel and no button, so it reads as the last step of the
+   information architecture rather than as a third engagement surface. */
+/* One sentence, set at --text-sm and given the canvas it closes. Every
+   intermediate cap tried here (68ch, then 140ch) broke it across lines the
+   page had room for; it now wraps only where the canvas itself ends. */
+.method-note {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  /* The close of the decision story needs room to breathe before the
+     section boundary and the closing band below it; at the section's own
+     padding alone the closing sentence sat almost against that edge. */
+  padding-bottom: var(--space-8);
+  border-top: 1px solid var(--border-hairline);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-muted);
+}
+
+/* ---------- Worked-example pointers ---------- */
+
+/* A one-line pointer to a worked-example figure in Technical Documentation,
+   placed where the reader's next question arises. The quietest thing in its
+   section by design: secondary text at small size, no panel, no button, no
+   eyebrow. It is not a result and must never be mistaken for one, which is
+   why the link text itself says "worked example" and the trailing clause says
+   it is not the scenario on screen. Uncapped for the same reason as the
+   closing note above: it is a single line and must not be wrapped early. */
+.worked-example-note {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-muted);
+}
+
+/* ================================================================== */
+/* The three decision visuals                                          */
+/* ================================================================== */
+
+/* ---------- Shared figure caption ---------- */
+
+/* The sentence that says what a figure means. Sits directly under the figure
+   and belongs to the figure's own geometry, so it uses that width rather than
+   a generic prose box drawn inside it. Quieter than body copy, not fine
+   print. */
+.figure-caption {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-secondary);
+}
+
+/* ---------- V1: delivery outlook ---------- */
+
+.chart-figure__series-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.chart-figure__series-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--chart-series-primary);
+}
+
+/* Key figure values as text, so nothing essential lives only in a tooltip. */
+.chart-figure__readout {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--rule);
+  font-size: var(--text-xs);
+  color: var(--ink-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-figure__readout strong {
+  color: var(--ink-primary);
+}
+
+/* ---------- V2: site delivery strip ---------- */
+
+.site-strip {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  padding: var(--space-5);
+}
+
+/* The figure's own scale statement: it explains the whole strip below it and
+   uses the strip's width, rather than stopping a third of the way across a
+   panel that is otherwise empty beside it. */
+.site-strip__scale-note {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-xs);
+  line-height: var(--line-height-normal);
+  color: var(--ink-muted);
+}
+
+.site-strip__rows {
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.site-strip__row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: var(--space-2) var(--space-5);
+  align-items: center;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-strip__site {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.site-strip__track-wrap {
+  margin-bottom: var(--space-2);
+}
+
+.site-strip__track {
+  position: relative;
+  height: 18px;
+  min-width: 2px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-sunken),
+    var(--surface-sunken) 5px,
+    var(--rule) 5px,
+    var(--rule) 6px
+  );
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.site-strip__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  min-width: 1px;
+}
+
+.site-strip__values {
+  font-size: var(--text-xs);
+  color: var(--ink-primary);
+}
+
+.site-strip__dim {
+  color: var(--ink-muted);
+}
+
+.site-strip__timing svg {
+  display: block;
+}
+
+.site-strip__outcomes {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--ink-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.site-strip__outcomes--summary {
+  display: block;
+  max-width: 64ch;
+  line-height: var(--line-height-normal);
+}
+
+.site-strip__swatch {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.4em;
+  border-radius: 1px;
+  margin-right: 0.4em;
+  vertical-align: middle;
+}
+
+.site-strip__axis {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: var(--space-5);
+}
+
+.site-strip__axis-track {
+  position: relative;
+  height: 30px;
+  margin-top: var(--space-1);
+}
+
+.site-strip__tick,
+.site-strip__target-mark {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: var(--text-xs);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.site-strip__tick {
+  color: var(--chart-label);
+  font-variant-numeric: tabular-nums;
+}
+
+.site-strip__target-mark {
+  top: 15px;
+  color: var(--ink-secondary);
+  font-size: 9px;
+}
+
+.site-strip__axis-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--ink-secondary);
+}
+
+@media (max-width: 760px) {
+  .site-strip__row,
+  .site-strip__axis {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+  .site-strip__axis-spacer {
+    display: none;
+  }
+}
+
+/* ---------- V3: choice comparison ---------- */
+
+.choice-table {
+  min-width: 720px;
+}
+
+.choice-table thead th {
+  vertical-align: bottom;
+}
+
+.choice-table__unit {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* The public strategy names are words, not label-case furniture -- the
+   uppercase treatment stays on the column headers only. */
+.choice-table tbody th {
+  vertical-align: top;
+  text-transform: none;
+  letter-spacing: 0;
+  max-width: 15rem;
+}
+
+.choice-row__label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+/* The authoritative row is named in words, not only tinted. */
+/* A row, not a block: at narrow widths a text-flow marker wrapped onto its
+   own line and read as a stray control. As a flex item it stays beside the
+   first line of the label, and the label wraps under itself. */
+.choice-row__badge {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  margin-top: 2px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.choice-row__badge::before {
+  content: "▸";
+  flex: 0 0 auto;
+}
+
+.choice-table td.num {
+  white-space: nowrap;
+}
+
+.choice-row--marked > th {
+  box-shadow: inset 3px 0 0 0 var(--accent);
+  padding-left: var(--space-3);
+}
+
+.choice-row--marked > th,
+.choice-row--marked > td {
+  background: var(--accent-tint);
+}
+
+.choice-meter {
+  display: grid;
+  grid-template-columns: minmax(56px, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 140px;
+}
+
+.choice-meter__track {
+  height: 10px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.choice-meter__fill {
+  height: 100%;
+  min-width: 1px;
+}
+
+.choice-meter__fill--chance {
+  background: var(--data-1);
+}
+
+.choice-meter__fill--cost {
+  background: var(--data-2);
+}
+
+.choice-meter__value {
+  font-size: var(--text-xs);
+  color: var(--ink-primary);
+  white-space: nowrap;
+}
+
+/* ================================================================== */
+/* Technical Documentation: a technical publication, not a             */
+/* dashboard. One prose column, a restrained persistent contents rail, */
+/* hairline tables, publication spacing around equations, no cards or  */
+/* shadows anywhere.                                                   */
+/* ================================================================== */
+
+.doc-canvas {
+  max-width: var(--doc-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-5) var(--space-9);
+}
+
+.doc-hero {
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-6);
+}
+
+/* Authorship at the head of the document, in the same treatment the Decision
+   page uses: the attribution reads as the title's companion, and the name
+   itself carries real presence without competing with the H1. The technical
+   work and the writing of this document are the same person's, and the line
+   says both. */
+.doc-hero .hero__masthead {
+  margin-bottom: var(--space-4);
+}
+
+/* Source and citation for the released model. Rendered only once a value
+   exists (see PublicationResources); nothing is drawn while both are null,
+   which is why there is no empty-state rule here. */
+.doc-resources {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.doc-resources__title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+
+.doc-resources__list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  color: var(--ink-secondary);
+}
+
+.doc-resources__label {
+  color: var(--ink-muted);
+}
+
+.doc-layout {
+  display: block;
+}
+
+/* The contents rail becomes a sticky column only where there is room for
+   one beside the prose measure. Below that it is an ordinary block above
+   the document. */
+@media (min-width: 1080px) {
+  .doc-layout {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .doc-toc {
+    position: sticky;
+    top: var(--space-5);
+    max-height: calc(100vh - var(--space-8));
+    overflow-y: auto;
+  }
+}
+
+.doc-toc {
+  border-top: 1px solid var(--rule-strong);
+  padding-top: var(--space-3);
+  margin-bottom: var(--space-6);
+  font-family: var(--font-sans);
+}
+
+.doc-toc__title {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  margin-bottom: var(--space-3);
+}
+
+.doc-toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: doc-toc;
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.35;
+}
+
+.doc-toc li {
+  counter-increment: doc-toc;
+  display: grid;
+  grid-template-columns: 1.9em minmax(0, 1fr);
+}
+
+.doc-toc li::before {
+  content: counter(doc-toc) ".";
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.doc-toc a {
+  color: var(--ink-secondary);
+  text-decoration: none;
+}
+
+.doc-toc a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* `doc-main` IS the reading container. The document already has three real
+   constraints stacked on each other — a bounded application canvas, a 236px
+   contents rail, and the gap between them — and what is left is a column
+   sized for reading. A further hard text box inside it (680px, then a 800px
+   clamp) only stopped paragraphs hundreds of pixels short of the tables,
+   figures and equations they introduce, which is the defect this pass
+   removes. Prose, headings, equation leads, captions and notes therefore all
+   share one right edge: the edge of this column. Text is never justified,
+   and at narrower widths the column simply becomes the viewport. */
+.doc-main {
+  min-width: 0;
+}
+
+.doc-section {
+  padding: var(--space-7) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.doc-section:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Running text: one size, one leading, one family, and no inner width box.
+   The family is the application's own IBM Plex Sans (the earlier
+   serif-body / sans-heading split made the documentation read as a
+   separate publication embedded in the product); only displayed mathematics
+   leaves it, for the MATH-table face below. */
+.doc-section > p,
+.doc-section > ul li,
+.doc-section > ol li,
+.doc-subsection > p,
+.doc-subsection > ul li,
+.doc-subsection > ol li,
+.equation__lead {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+/* Vertical rhythm: a paragraph break has to be legible against a 1.65
+   leading, and 12px was not. One space unit between paragraphs, a clear
+   step above a subsection heading, and no compensating space where a
+   heading already opens a block. */
+.doc-section > p,
+.doc-subsection > p,
+.doc-section > ul,
+.doc-section > ol,
+.doc-subsection > ul,
+.doc-subsection > ol {
+  margin-bottom: var(--space-4);
+}
+
+.doc-section > p:last-child,
+.doc-subsection > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Subsection rhythm is denser than the top-level rhythm on purpose: a
+   subsection is a step inside an argument, not a new part of the document.
+   Top-level sections keep their 48px + hairline separation. */
+.doc-section .subsection-heading {
+  margin-top: var(--space-6);
+}
+
+.doc-section .subsection-heading:first-child,
+.doc-subsection > .subsection-heading:first-child {
+  margin-top: 0;
+}
+
+/* Ancillary text: smaller, but on the same alignment line as everything else.
+   It carries no inner edge of its own -- a caption is not narrower than the
+   figure it describes merely because it is set smaller. */
+.doc-section .fine-print,
+.doc-section .figure-caption,
+.doc-section figcaption,
+.doc-section .equation__note,
+.doc-section .lambda-cursor__readout p {
+  font-size: var(--text-xs);
+}
+
+.doc-section .lambda-cursor__readout p:first-child,
+.doc-section .lambda-cursor__uniqueness {
+  font-size: var(--text-sm);
+}
+
+.doc-section .table-scroll,
+.doc-section .chart-figure,
+.doc-section .doc-figure,
+.doc-section .lambda-panel {
+  margin: var(--space-6) 0;
+}
+
+/* Documentation tables size to their own content and never exceed the
+   column: a two-column break-even table stretched across the canvas reads as
+   a layout accident, while the five-column mapping tables genuinely need the
+   room. Table cells are the one place compactness is the point. */
+.doc-section .data-table {
+  width: auto;
+  max-width: 100%;
+}
+
+.doc-section .data-table caption {
+  line-height: 1.5;
+}
+
+/* Documentation tables carry long labels in their row headers -- a term, a
+   public label, a site name. Small caps are right for the column headers and
+   wrong for these, so row headers read as ordinary emphasized text. */
+.doc-section .data-table tbody th {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--text-sm);
+  color: var(--ink-primary);
+}
+
+/* A symbol inside an uppercased column header keeps its own case: the header
+   transform would otherwise render lower-case lambda as capital lambda, which
+   is a different symbol. */
+.data-table th .symbol {
+  text-transform: none;
+}
+
+.doc-subsection {
+  margin-top: var(--space-6);
+}
+
+.doc-figure {
+  margin: var(--space-6) 0;
+}
+
+.doc-figure .figure-caption {
+  margin-top: var(--space-3);
+}
+
+/* ---------- The qualitative-to-physical translation chain ---------- */
+
+/* This is the model's own translation layer -- coarse project knowledge to
+   explicit physical parameters -- and it is load-bearing content, not an
+   annotation on the paragraph above it. At --text-xs it read as fine print,
+   which understated four steps that the whole engine rests on. It is now set
+   at body size and weight so it carries its actual importance, while staying
+   a restrained numbered list against a single accent rule rather than
+   becoming four cards. */
+.translation-chain {
+  list-style: none;
+  counter-reset: chain;
+  padding: var(--space-4) 0 var(--space-4) var(--space-5);
+  margin: var(--space-5) 0;
+  border-left: 2px solid var(--accent);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.translation-chain li {
+  counter-increment: chain;
+  display: grid;
+  grid-template-columns: 2.1em minmax(0, 1fr);
+  align-items: baseline;
+  color: var(--ink-primary);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.translation-chain li::before {
+  content: counter(chain);
+  color: var(--ink-muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Display equations (plan §15) ---------- */
+
+/* One equation is one semantic unit: lead sentence, formula, optional note.
+   The spacing says so. At 48px outer margins and 24px display padding every
+   formula opened what looked like a new page, and a run of consecutive
+   equations (section 8 is the clearest case) turned into a column of blank
+   islands. The unit now gets enough air to stay legible and no more; the
+   strong separations on this page belong to top-level sections. */
+.equation {
+  margin: var(--space-5) 0;
+}
+
+/* Consecutive equations are steps in one derivation and read as a group,
+   so they sit closer to each other than to the prose around them. */
+.equation + .equation {
+  margin-top: var(--space-4);
+}
+
+.equation__lead {
+  margin-bottom: var(--space-2);
+}
+
+/* The display is set off by air rather than by a rule or a fill. No box, no
+   background, no monospace anywhere. */
+.equation__display {
+  padding: var(--space-3) 0;
+  margin: 0;
+  overflow-x: auto;
+}
+
+/* STIX Two Math, self-hosted. The MATH table is what makes this look
+   typeset rather than assembled: stretchy fences that actually reach the
+   block they enclose, a fraction bar at the right weight and height, and
+   script positions taken from the font rather than guessed by the engine.
+   1.15rem sits correctly against the 17px prose around it. */
+.equation math {
+  font-family: var(--font-math);
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: var(--ink-primary);
+}
+
+/* MathML Core dropped the `columnalign` attribute, and the engines centre
+   table cells instead — which leaves the rows of a constraint system and the
+   values of a piecewise definition each starting at a different x. Both read
+   flush left, as they do in print. */
+.equation math mtd {
+  text-align: left;
+}
+
+/* A stretched fence is drawn from the font's own vertical assembly, so it
+   must not inherit prose leading around it. */
+.equation math mo[fence="true"] {
+  line-height: 1;
+}
+
+.equation__note {
+  margin-top: var(--space-2);
+  color: var(--ink-muted);
+}
+
+/* ---------- Equation-local "where:" key ---------- */
+
+/* Every displayed equation carries a compact, non-empty definition of the
+   symbols required to read it, subordinate to the equation itself: smaller
+   type, muted label, and less vertical air than the equation's own margin.
+   Deliberately below the equation and above the optional note, so the
+   reading order is expression, then its key, then any clarification.
+
+   The whole block (label and every symbol/definition row) is indented one
+   step past the main-content axis so it reads as supporting notation rather
+   than as a continuation of the narrative prose. The lead paragraph above,
+   the optional note below, and the body paragraphs that follow all stay on
+   the main axis. */
+.equation__where {
+  margin-top: var(--space-3);
+  padding-left: var(--space-5);
+}
+
+.equation__where-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  margin: 0 0 var(--space-2);
+}
+
+/* One grid for the whole key, not one per row (the `.headline-results`
+   pattern above): a symbol column sized to its widest symbol, never fixed,
+   since a symbol can be one letter or a subscripted function like Aᵢ⁽ˢ⁾(t)),
+   so every row's meaning starts on the same left edge. Row wrappers stay in
+   the DOM for the <dl> grouping and drop out of layout with
+   `display: contents`. */
+.equation__where dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(3em, max-content) minmax(0, 1fr);
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
+}
+
+.equation__where-row {
+  display: contents;
+}
+
+.equation__where-row dt {
+  grid-column: 1;
+  align-self: baseline;
+  font-style: italic;
+  color: var(--ink-primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.equation__where-row dd {
+  grid-column: 2;
+  margin: 0;
+  color: var(--ink-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+/* Below the width a symbol column plus a wrapping meaning column would start
+   to squeeze the definition into an unreadable sliver, the row stacks: the
+   symbol sits on its own line above its meaning, and the wrapper divs
+   return to normal block flow so a stacked dt/dd pair reads as one unit. */
+@media (max-width: 480px) {
+  /* A shallower step on narrow screens: still clearly a secondary axis,
+     without eating into the already-tight definition column. */
+  .equation__where {
+    padding-left: var(--space-3);
+  }
+
+  .equation__where dl {
+    display: block;
+  }
+
+  .equation__where-row {
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+
+  .equation__where-row dt {
+    display: block;
+    white-space: normal;
+  }
+
+  .equation__where-row dd {
+    display: block;
+    margin-top: 0.15em;
+  }
+}
+
+/* Single-letter variables in running prose: italic, inheriting whatever face
+   the surrounding prose uses — never a monospace code span, and no longer a
+   second family switched in mid-sentence. */
+.var {
+  font-style: italic;
+}
+
+/* ---------- Introduction industry references ---------- */
+
+.doc-sources {
+  padding-left: 1.4em;
+}
+
+.doc-sources li {
+  color: var(--ink-secondary);
+}
+
+.doc-sources li + li {
+  margin-top: var(--space-2);
+}
+
+/* ---------- λ regime readout additions ---------- */
+
+.lambda-cursor__uniqueness {
+  margin-top: var(--space-2);
+  color: var(--ink-secondary);
+}
+
+@media (max-width: 640px) {
+  .doc-canvas {
+    padding: 0 var(--space-4) var(--space-8);
+  }
+
+  .doc-section > p,
+  .doc-subsection > p,
+  .doc-section > ul li,
+  .doc-section > ol li,
+  .doc-subsection > ul li,
+  .doc-subsection > ol li,
+  .translation-chain li,
+  .equation__lead {
+    font-size: var(--text-base);
+  }
+
+  .equation__display {
+    padding: var(--space-3);
+  }
+}
+
+/* ================================================================== */
+/* Additional refinements                                              */
+/* ================================================================== */
+
+/* ---------- Analysis-mode notice: 4+ candidate sites ---------- */
+
+/* An opportunity, not an error. It takes the accent tint and an accent rule
+   — the vocabulary the product uses for "here is something worth knowing" —
+   and deliberately none of the attention palette reserved for the
+   feasibility notice, so nothing about adding a fourth site reads as a
+   failure or as a limit of the mathematics. */
+.mode-notice {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--accent-tint);
+  color: var(--ink-primary);
+}
+
+.mode-notice__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--accent);
+  margin-bottom: var(--space-1);
+}
+
+.mode-notice__heading {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--ink-primary);
+}
+
+/* No max-width -- same width-system reasoning as .decision-synthesis /
+   .section-insight above: the description wrapped early at wide desktop
+   while the panel it sits in had the room. */
+.mode-notice__body {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-primary);
+}
+
+/* Kept as one solid unit rather than left to wrap wherever the line happens
+   to break -- a strategy name reads as one term, not two lines of one. */
+.mode-notice__strategy {
+  white-space: nowrap;
+}
+
+/* ---------- Reusable project-specific model offer ---------- */
+
+/* The one professional-engagement statement reused everywhere a portfolio's
+   size or complexity is the moment to raise it: standalone under Candidate
+   Sites for a portfolio the public build still optimizes live (<=3 sites),
+   and embedded directly after the Analysis Mode explanation for a larger
+   one. Same component, same copy, two settings -- never a second, competing
+   copy of the offer. */
+.offer__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: var(--space-1);
+}
+
+.offer__ask {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--ink-primary);
+  margin: 0 0 var(--space-2);
+}
+
+.offer__body {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-secondary);
+  margin: 0 0 var(--space-3);
+}
+
+.offer__contact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.offer__contact:hover {
+  color: var(--accent-hover);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .offer__contact-arrow {
+    transition: transform 180ms ease;
+  }
+  .offer__contact:hover .offer__contact-arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* Standalone (<=3 sites): a professional callout between Candidate Sites
+   and Analyze -- a near-white ground and a hairline border, not the
+   accent-tint fill. The accent eyebrow,
+   the strong headline and the accent contact link carry its identity; only
+   "Why this decision" further down keeps the strong filled emphasis. */
+.offer--standalone {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+}
+
+/* Embedded (4+ sites): the same statement, set apart from the Analysis Mode
+   explanation above it by a hairline and spacing alone -- one panel, not a
+   second, visually competing card nested inside it. */
+.offer--embedded {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule-strong);
+}
+
+/* ---------- The decision: conclusion before criterion ---------- */
+
+/* The plain-English answer, set a step above body copy so it is read first.
+   Everything under it — the criterion definition, the bars, the four
+   numbers — elaborates this sentence. */
+/* ---------- The "Why this decision" synthesis ---------- */
+
+/* The one executive synthesis: what was selected, why it wins under the
+   model's own criterion, the main gain/give-up, the remaining exposure, a
+   mechanism fact where one is supported, and the next validated sensitivity
+   move. It replaces the former standalone decision-lead and
+   selection-criterion paragraphs, so it is deliberately the most visually
+   distinct block in the decision story -- the same quiet accent-rule
+   treatment `.doc-example` uses in Technical Documentation, not a new
+   pattern. */
+/* This is the executive conclusion of the whole result, so it earns more
+   weight than any other note on the page -- an accent ground (not the
+   neutral sunken tint every other note uses), a heavier rule, and a
+   heading set in the accent color rather than muted ink. Still flat: no
+   gradient, no shadow, no card. And no max-width -- every intermediate cap tried here (96ch, then 86ch) left a
+   narrow prose column with hundreds of pixels of empty canvas beside it at
+   wide desktop; the section is the only constraint now, matching the width
+   system documented on `--app-max-width` in tokens.css. */
+.decision-synthesis {
+  margin: var(--space-5) 0 var(--space-6);
+  padding: var(--space-5) var(--space-6);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--accent-tint);
+}
+
+.decision-synthesis__heading {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+}
+
+.decision-synthesis__text {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--ink-primary);
+  text-wrap: pretty;
+}
+
+/* ---------- Section-local "what this means for your scenario" ---------- */
+
+/* One scenario-specific sentence under a result section's own visual, so
+   the section is understandable without reading the golden synthesis above
+   it. Set apart from the "how to read this" caption above the figure
+   (`.section-subheading`) by weight, not by a panel. */
+/* No max-width, per the width system on `--app-max-width` in tokens.css:
+   Choice comparison and the other full-canvas result sections wrapped this
+   sentence into a narrow column at wide desktop while the section itself
+   had the room. The Key Results use of this class still reads naturally,
+   bounded by the decision-grid column it sits in. */
+.section-insight {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-primary);
+}
+
+/* ---------- Section-local "technical basis" ---------- */
+
+/* The quiet documentation pointer that closes a result section: why a
+   marked row can trail another on a visible column, or a link to the
+   canonical definition behind what the section shows. Ordinary supporting
+   prose, not a callout. */
+/* No max-width -- same reasoning as .section-insight above. */
+.section-basis {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-secondary);
+}
+
+/* ---------- Long-running analysis ---------- */
+
+/* Indeterminate by construction: the request carries no progress, so the
+   track carries no figure. It exists to show the page is alive. */
+.progress-track {
+  display: block;
+  margin-top: var(--space-3);
+  height: 3px;
+  width: min(320px, 100%);
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.progress-track__bar {
+  display: block;
+  height: 100%;
+  width: 34%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .progress-track__bar {
+    animation: progress-sweep 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes progress-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+/* ---------- Authorship ---------- */
+
+/* Technical Documentation masthead: the role phrase stays quiet, the name is
+   the element. Still a clear step below the H1. */
+.hero__byline--stacked {
+  display: grid;
+  gap: 2px;
+  margin-top: var(--space-2);
+}
+
+.hero__byline-role {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.hero__byline-name {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-primary);
+  line-height: 1.2;
+}
+
+/* Closing band: the name at full contrast on the dark ground, its own line
+   under the role phrase, rather than tracked-out inside a 12px eyebrow. */
+.cta--closing .cta__author {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--on-accent);
+  letter-spacing: -0.005em;
+  margin-bottom: var(--space-3);
+}
+
+.cta--closing .cta__eyebrow {
+  margin-bottom: var(--space-1);
+}
+
+/* ---------- Example provenance after an edit ---------- */
+
+.example-menu__edited {
+  font-style: italic;
+}
+
+/* ---------- Contents rail: current section ---------- */
+
+.doc-toc__link.is-current {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---------- The fixed documentation example ---------- */
+
+/* Stated once, above the two figures built from it, so neither can be taken
+   for the reader's own Decision scenario. */
+.doc-example {
+  margin: var(--space-5) 0;
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--rule-strong);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--surface-sunken);
+}
+
+.doc-example__title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  margin-bottom: var(--space-2);
+}
+
+.doc-example__body {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--ink-primary);
+}
+
+/* The sensitivity block is a two-column "label | finding" composition, so its
+   documentation pointer has to span the whole block rather than fall into the
+   narrow label rail beside the finding it follows. */
+.sensitivity .worked-example-note {
+  grid-column: 1 / -1;
+  margin-top: var(--space-3);
+}

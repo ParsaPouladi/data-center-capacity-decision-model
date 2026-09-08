@@ -1,0 +1,34 @@
+# Power-delivery burden mapping: B_i -> (tau1_bar, tau2_bar)
+# SENSITIVITY VARIANT (model spec): every tranche timing scaled by 1.1
+# (~10% later) relative to configs/burden_states.yaml (v1-baseline), same
+# four states, same interpretation labels. This is a synthetic sensitivity
+# device to test whether decision boundaries and strategy rankings identified
+# under v1-baseline survive a plausible alternative timing assumption -- it
+# is NOT a claim that this timing is more accurate than v1-baseline.
+#
+# Any substantive change to these values must bump mapping_version and must
+# not be made silently (model spec).
+
+mapping_version: v1-stretched
+
+states:
+  1:
+    label: Low
+    interpretation: Limited additional infrastructure required
+    tau1_bar: 19.8
+    tau2_bar: 26.4
+  2:
+    label: Moderate
+    interpretation: Meaningful local/substation upgrades required
+    tau1_bar: 26.4
+    tau2_bar: 33.0
+  3:
+    label: High
+    interpretation: Major dedicated infrastructure development
+    tau1_bar: 33.0
+    tau2_bar: 46.2
+  4:
+    label: Very high
+    interpretation: Major upstream/system infrastructure dependency
+    tau1_bar: 46.2
+    tau2_bar: 59.4

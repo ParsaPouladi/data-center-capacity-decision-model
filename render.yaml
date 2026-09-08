@@ -1,0 +1,45 @@
+# Render Blueprint for the public application (live API tier).
+# Non-canonical deployment config. No database, no secrets, no disk.
+#
+# CORS origins and trusted hosts are left unset here (sync: false) so the
+# exact frontend origin and the real Render hostname are supplied in the
+# dashboard once they are known -- no source edit needed.
+
+services:
+  - type: web
+    name: data-center-capacity-api
+    runtime: python
+    plan: free             # small instance (512 MB / 0.1 vCPU, sleeps when
+                           # idle); a stylized <=12-site scenario fits with
+                           # headroom. A production deployment would use a
+                           # paid always-on plan.
+    region: oregon
+    autoDeploy: false      # deploy on demand, not on every push
+    branch: main
+    buildCommand: pip install --upgrade pip && pip install ".[app]"
+    # Single worker (the evaluator's tensors are memory-heavy). No --reload.
+    # Concurrency is bounded so a burst queues/sheds rather than exhausting
+    # the instance; keep-alive is short since a CDN fronts the origin.
+    #
+    # --app-dir src imports trackc_app from the checked-out repository tree
+    # rather than the non-editable copy under site-packages, so service.py's
+    # repo-relative `configs/` resolution (_REPO_ROOT = __file__/../../..)
+    # points at the clone's top-level configs/ dir. Deployment-only: no
+    # change to config loading or model behavior.
+    startCommand: >-
+      uvicorn trackc_app.api:app --app-dir src
+      --host 0.0.0.0 --port $PORT
+      --workers 1 --limit-concurrency 16 --timeout-keep-alive 5
+      --no-server-header
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: TRACKC_APP_ENV
+        value: production
+      - key: TRACKC_APP_CORS_ORIGINS
+        sync: false          # e.g. https://<project>.pages.dev  (exact, comma-separated)
+      - key: TRACKC_APP_TRUSTED_HOSTS
+        sync: false          # e.g. data-center-capacity-api.onrender.com
+      # TRACKC_APP_COMMIT is optional: Render sets RENDER_GIT_COMMIT itself
+      # and /api/version already reads it.

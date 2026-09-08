@@ -1,0 +1,19 @@
+# Model-wide default parameters.
+#
+# Tranche fraction: fraction of K_i delivered at the first tranche date.
+# alpha = 0.50 for model v1. See docs/model-specification.md for the
+# tranche-fraction definition and the phased-availability function. Kept
+# configurable but not expected to change during ordinary operation.
+alpha: 0.50
+
+# Scenario engine (model spec).
+#
+# The engine enumerates all joint site-delay combinations exactly while the
+# full scenario count S_full = prod_i q_i stays <= max_exact_scenarios
+# (q_i = number of delay outcomes for site i's uncertainty state). Above
+# that threshold it switches to Monte Carlo with mc_samples draws, using
+# random_seed for reproducibility. These are configuration defaults, not
+# hard-coded model laws (model spec).
+max_exact_scenarios: 100000
+mc_samples: 10000
+random_seed: 12345

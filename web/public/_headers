@@ -1,0 +1,29 @@
+# Response headers for the static site (Cloudflare Pages style).
+# Served from the build output root (this file is copied verbatim from
+# web/public/ into web/dist/).
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# Hashed, immutable build assets.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Synthetic showcase data: revalidate often so a redeploy is picked up
+# quickly.
+/data/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+# A full Content-Security-Policy is deferred to production hardening: it must name the exact API origin in connect-src, which is a
+# build-time value not available to this static file. The app pages load only
+# same-origin hashed JS/CSS and same-origin fonts; cross-origin traffic is the
+# single fetch() to the Render API, already constrained by that API's exact
+# CORS allow-list.
