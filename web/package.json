@@ -1,7 +1,7 @@
 {
   "name": "data-center-capacity-decision-model-web",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Public-application frontend. Non-canonical presentation layer over the committed trackc exports and the live API.",
   "type": "module",
   "scripts": {

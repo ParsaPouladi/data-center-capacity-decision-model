@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchStaticJson } from "./fetchStaticJson";
 
 export type FetchState<T> =
   | { status: "loading" }
@@ -11,6 +12,10 @@ export type FetchState<T> =
  * computation happens here; this hook
  * only retrieves and parses JSON that scripts/export_showcase_data.py
  * already produced.
+ *
+ * The fetch itself goes through `fetchStaticJson`, which retries once on a
+ * transient network/gateway failure (see that module); the loading/ready/
+ * error contract this hook exposes is unchanged.
  */
 export function useJson<T>(path: string): FetchState<T> {
   const [state, setState] = useState<FetchState<T>>({ status: "loading" });
@@ -23,13 +28,7 @@ export function useJson<T>(path: string): FetchState<T> {
     let cancelled = false;
     setState({ status: "loading" });
 
-    fetch(path)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`${res.status} ${res.statusText}`);
-        }
-        return res.json() as Promise<T>;
-      })
+    fetchStaticJson<T>(path)
       .then((data) => {
         if (!cancelled) setState({ status: "ready", data });
       })

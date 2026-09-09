@@ -19,6 +19,7 @@ import {
   type SystemInsufficientBody,
   type VersionInfo,
 } from "../data/api";
+import { fetchStaticJson } from "../data/fetchStaticJson";
 import {
   blankDraft,
   draftFromScenario,
@@ -86,6 +87,13 @@ export type Analysis =
   | { status: "example"; showcase: ShowcaseExport; title: string }
   | { status: "ready"; showcase: ShowcaseExport; ranOptimize: boolean }
   | { status: "error"; message: string }
+  /**
+   * A bundled example could not be loaded, both attempts included. `meta` is
+   * the example that failed, so the recovery action reloads exactly it — it
+   * never falls back to analyzing the current draft. No raw browser error
+   * text rides along; the message shown is composed at the render site.
+   */
+  | { status: "example_error"; meta: PresetMeta }
   | { status: "unavailable" }
   | { status: "guardrail"; body: GuardrailBody }
   | { status: "system_insufficient"; body: SystemInsufficientBody };
@@ -106,6 +114,13 @@ export interface WorkbenchResult {
    * are carried to the new result instead of leaving it below the fold.
    */
   resultRef: RefObject<HTMLDivElement | null>;
+  /**
+   * Set only while `analysis.status === "example_error"`: retries the exact
+   * example that failed to load. `null` in every other state. Distinct from
+   * `onRun` on purpose — retrying a failed example load must not analyze the
+   * draft on screen.
+   */
+  onRetryExample: (() => void) | null;
 }
 
 function normalizedScenarioJson(scenario: Scenario): string {
@@ -331,9 +346,9 @@ export function ScenarioWorkbench({
     setCompletionAnnouncement("");
     setExampleLoading(meta.id);
     try {
-      const res = await fetch(`/data/${meta.file}`);
-      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-      const payload = (await res.json()) as { showcase: ShowcaseExport };
+      const payload = await fetchStaticJson<{ showcase: ShowcaseExport }>(
+        `/data/${meta.file}`,
+      );
       const showcase = payload.showcase;
       const scenarioJson = normalizedScenarioJson(showcase.scenario);
       setDraft(draftFromScenario(showcase.scenario));
@@ -346,12 +361,13 @@ export function ScenarioWorkbench({
       });
       setAnalysis({ status: "example", showcase, title: meta.title });
       setAnalyzedJson(scenarioJson);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      setAnalysis({
-        status: "error",
-        message: `Could not load the ${meta.title} example (${message}).`,
-      });
+    } catch {
+      // Both attempts failed (fetchStaticJson has already retried once). The
+      // draft, the analyzed-scenario identity and any prior loaded example are
+      // left exactly as they were, so nothing stale is shown and the retry has
+      // a clean starting point. The raw error is intentionally dropped here;
+      // the failure copy is composed where it is rendered.
+      setAnalysis({ status: "example_error", meta });
     } finally {
       setExampleLoading(null);
     }
@@ -422,6 +438,15 @@ export function ScenarioWorkbench({
   const feasibilityBlocked = !validation.ok && !!validation.feasibility;
   const canRun = !!validScenario && !apiDown;
   const largePortfolio = draft.sites.length > LIVE_OPTIMIZE_MAX_SITES;
+
+  // Only a failed example load offers a retry, and it reloads that exact
+  // example — never a draft analysis.
+  const onRetryExample =
+    analysis.status === "example_error"
+      ? () => {
+          void loadExample(analysis.meta);
+        }
+      : null;
 
   return (
     <>
@@ -501,6 +526,7 @@ export function ScenarioWorkbench({
         onRun: analyze,
         onClear: clearScenario,
         resultRef: resultRegionRef,
+        onRetryExample,
       })}
     </>
   );

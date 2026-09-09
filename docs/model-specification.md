@@ -2,6 +2,11 @@
 
 **Data Center Capacity Decision Model — version 1.0.0**
 
+> Software release v1.0.1 changes only frontend fetch resilience; the
+> mathematical model specified here is unchanged from model version v1.0.0.
+> Software release version = 1.0.1; mathematical model specification =
+> unchanged v1.0.0.
+
 This document specifies the mathematics of the model: its inputs, the
 mapping from ordinal site conditions to physical quantities, the
 evaluation metrics, the objective, the optimization, and the boundaries

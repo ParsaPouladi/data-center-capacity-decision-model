@@ -1,7 +1,7 @@
 # Reproducibility
 
 Every command below is run from the repository root and was executed against
-this release. Counts and versions describe **v1.0.0**; they are not a
+this release. Counts and versions describe **v1.0.1**; they are not a
 permanent contract, and later revisions may legitimately change the test
 count.
 
@@ -76,6 +76,9 @@ identically to what is committed. Each example is a three-site scenario
 evaluated by exact enumeration of the 27-outcome joint delay space, so there
 is no sampling and no seed.
 
+The v1.0.1 maintenance release changes only frontend fetch resilience; these
+committed showcase / model-output artifacts are byte-identical to v1.0.0.
+
 ## Frontend: type-check, build, end-to-end
 
 ```bash
@@ -89,7 +92,7 @@ npx playwright test
 ```
 
 Expected: type-checks and build succeed (the "chunks larger than 500 kB"
-line from Vite is informational, not an error). Playwright: **250 passed**,
+line from Vite is informational, not an error). Playwright: **256 passed**,
 Chromium only.
 
 ## Release manifest

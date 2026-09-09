@@ -1,6 +1,6 @@
 [project]
 name = "trackc"
-version = "1.0.0"
+version = "1.0.1"
 description = "Data-center capacity allocation under limited information and uncertain power delivery."
 requires-python = ">=3.11"
 dependencies = [

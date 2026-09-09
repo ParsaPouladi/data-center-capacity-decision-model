@@ -15,7 +15,7 @@ abstract: >-
   application compares defined benchmark strategies and reports the best
   among them. Inputs and worked examples are synthetic and stylized.
 type: software
-version: "1.0.0"
+version: "1.0.1"
 license: Apache-2.0
 repository-code: "https://github.com/ParsaPouladi/data-center-capacity-decision-model"
 url: "https://capacity.parsapouladi.com"

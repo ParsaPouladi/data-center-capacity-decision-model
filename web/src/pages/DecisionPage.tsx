@@ -229,6 +229,7 @@ function ResultsRegion({
   rawCapacities,
   onRun,
   onClear,
+  onRetryExample,
   resultRef,
 }: WorkbenchResult) {
   if (analysis.status === "idle") {
@@ -267,6 +268,33 @@ function ResultsRegion({
         <strong>The analysis could not be completed.</strong> {analysis.message}{" "}
         Your inputs are preserved and nothing below has been updated. Adjust and
         analyze again, or{" "}
+        <button type="button" className="btn btn--link" onClick={onClear}>
+          clear the scenario
+        </button>
+        .
+      </div>
+    );
+  }
+  if (analysis.status === "example_error") {
+    // A committed example did not load, after one automatic retry. No raw
+    // browser error is shown; "Try again" reloads that same example (never a
+    // draft analysis), and the current inputs are left untouched.
+    return (
+      <div className="results-note callout callout--warn" role="alert">
+        <strong>This example could not be loaded.</strong> The request for its
+        data did not complete. Your inputs are unchanged.{" "}
+        {onRetryExample ? (
+          <>
+            <button
+              type="button"
+              className="btn btn--link"
+              onClick={onRetryExample}
+            >
+              Try again
+            </button>{" "}
+            or{" "}
+          </>
+        ) : null}
         <button type="button" className="btn btn--link" onClick={onClear}>
           clear the scenario
         </button>

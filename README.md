@@ -256,7 +256,7 @@ Citation metadata is in [`CITATION.cff`](CITATION.cff). GitHub renders it as
 a "Cite this repository" panel; most reference managers can import the file
 directly. Cite the software as:
 
-> Pouladi, P. *Data Center Capacity Decision Model* (Version 1.0.0)
+> Pouladi, P. *Data Center Capacity Decision Model* (Version 1.0.1)
 > [Computer software]. <https://github.com/ParsaPouladi/data-center-capacity-decision-model>
 
 ## References
