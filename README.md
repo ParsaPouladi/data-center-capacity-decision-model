@@ -3,9 +3,6 @@
 Data center capacity allocation under limited information and uncertain power
 delivery.
 
-**Live application:** <https://capacity.parsapouladi.com>
-· **Technical Documentation:** <https://capacity.parsapouladi.com/technical-documentation.html>
-
 ---
 
 ## The decision problem
